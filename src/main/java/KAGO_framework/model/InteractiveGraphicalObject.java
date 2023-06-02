@@ -8,7 +8,7 @@ public abstract class InteractiveGraphicalObject extends GraphicalObject impleme
 
     @Override
     public void keyPressed(int key){
-
+        while(true);
     }
 
     @Override
