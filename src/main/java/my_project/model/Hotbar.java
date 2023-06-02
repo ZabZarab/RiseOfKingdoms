@@ -12,7 +12,7 @@ public class Hotbar extends GraphicalObject {
         this.x = 0;
         this.height = 100;
         this.y = 700-height;
-        this.width = 1200;
+        this.width = Config.WINDOW_WIDTH;
     }
 
     @Override
@@ -25,9 +25,9 @@ public class Hotbar extends GraphicalObject {
         drawTool.setCurrentColor(Color.BLACK);
         drawTool.drawRectangle(x+5, y+5 , 125, 80);
         drawTool.drawRectangle(x+140, y+5 , 125, 80);
-
-        drawTool.drawRectangle(x+5, y+5 , 125, 80);
-        drawTool.drawRectangle(x+140, y+5 , 125, 80);
+        //Cars
+        drawTool.drawRectangle(x+140+25+125, y+5 , 125, 80);
+        drawTool.drawRectangle(x+140+150+125+10, y+5 , 125, 80);
     }
 
 
