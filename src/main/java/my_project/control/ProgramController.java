@@ -1,7 +1,9 @@
 package my_project.control;
 
 import KAGO_framework.control.ViewController;
+import KAGO_framework.model.abitur.datenstrukturen.Edge;
 import KAGO_framework.model.abitur.datenstrukturen.Graph;
+import KAGO_framework.model.abitur.datenstrukturen.List;
 import KAGO_framework.model.abitur.datenstrukturen.Vertex;
 import my_project.model.Buildings;
 import my_project.model.Hotbar;
@@ -40,6 +42,8 @@ public class ProgramController {
     public void startProgram() {
         // Erstelle ein Objekt der Klasse Ball und lasse es zeichnen
         addAll();
+        addHouse(100,100,100,100);
+        System.out.println(allBuildings.getVertices().getContent().getID());
     }
 
     /**
@@ -69,11 +73,28 @@ public class ProgramController {
         HouseSmall houseSmall = new HouseSmall(x,y,width,height,id);
         viewController.draw(houseSmall);
         allBuildings.addVertex(new Vertex(id));
+        idCounter++;
     }
 
     public void drawHouse(int x, int y, int width, int height){
         //Erstellt und zeichnet ein Haus als Objekt (Nur zum zeichnen --> Keine Veränderung im Graphen)
         HouseSmall houseSmall =new HouseSmall(x, y, width, height, null);
         viewController.draw(houseSmall);
+    }
+
+    public boolean addStreet(Buildings b1, Buildings b2){
+        Vertex v1 = allBuildings.getVertex(b1.getId());
+        Vertex v2 = allBuildings.getVertex(b2.getId());
+        if(v2!=null && v1!=null){
+            List<Vertex> b = allBuildings.getNeighbours(v1);
+            b.toFirst();
+            while (b.hasAccess()){
+                if(b.getContent() == v2) return false;
+                b.next();
+            }
+            allBuildings.addEdge(new Edge(v1 , v2 , 1));
+            return true;
+        }
+        return false;
     }
 }
