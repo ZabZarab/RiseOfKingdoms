@@ -14,8 +14,10 @@ public class HouseBig extends Buildings{
      * @param width
      * @param height
      */
-    public HouseBig(double x, double y, double width, double height) {
-        super(x, y, width, height);
+    String id;
+
+    public HouseBig(int x, int y, int width, int height, String id) {
+        super(x, y, width, height, id);
     }
 
     @Override

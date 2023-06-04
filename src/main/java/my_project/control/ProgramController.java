@@ -1,6 +1,8 @@
 package my_project.control;
 
 import KAGO_framework.control.ViewController;
+import KAGO_framework.model.abitur.datenstrukturen.Graph;
+import KAGO_framework.model.abitur.datenstrukturen.Vertex;
 import my_project.model.Buildings;
 import my_project.model.Hotbar;
 import my_project.model.HouseSmall;
@@ -16,6 +18,8 @@ public class ProgramController {
 
     // Referenzen
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
+    private Graph allBuildings; // Referenz auf ein Objekt der Klasse Graph - Verwaltet alle Gebäude als Knoten und Straßen als Kanten
+    private int idCounter; // Zählt die Anzahl der erstellten Gebäude mit, um ID's für Die Gebäude zu generieren
 
     /**
      * Konstruktor
@@ -26,6 +30,7 @@ public class ProgramController {
      */
     public ProgramController(ViewController viewController){
         this.viewController = viewController;
+        allBuildings = new Graph();
     }
 
     /**
@@ -34,7 +39,7 @@ public class ProgramController {
      */
     public void startProgram() {
         // Erstelle ein Objekt der Klasse Ball und lasse es zeichnen
-        drawAll();
+        addAll();
     }
 
     /**
@@ -45,11 +50,30 @@ public class ProgramController {
 
     }
 
-    public void drawAll(){
+    public void addAll(){
+        //Alle am Anfang benötigte Objekte werden hinzugefügt und gezeichnet
+        drawUI();
+    }
+
+    public void drawUI(){
+        // Zeichnet alle Elemente der Nutzeroberfläche
         Hotbar hotbar = new Hotbar();
         viewController.draw(hotbar);
 
-        HouseSmall houseSmall = new HouseSmall(50, 640, 30, 20);
+        drawHouse(50, 640, 30, 20);
+    }
+
+    public void addHouse(int x, int y, int width, int height){
+        //Erstellt und zeichnet ein Haus als Objekt und einen Knoten mit einer ID
+        String id = "b" + idCounter; // Erstellt eine ID
+        HouseSmall houseSmall = new HouseSmall(x,y,width,height,id);
+        viewController.draw(houseSmall);
+        allBuildings.addVertex(new Vertex(id));
+    }
+
+    public void drawHouse(int x, int y, int width, int height){
+        //Erstellt und zeichnet ein Haus als Objekt (Nur zum zeichnen --> Keine Veränderung im Graphen)
+        HouseSmall houseSmall =new HouseSmall(x, y, width, height, null);
         viewController.draw(houseSmall);
     }
 }

@@ -16,11 +16,14 @@ public abstract class Buildings extends GraphicalObject {
      * @param x Startposition x
      * @param y Startposition y
      */
-    public Buildings(double x, double y, double width, double height){
+    String id;
+
+    public Buildings(int x, int y, int width, int height, String id){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.id = id;
     }
 
 
@@ -42,4 +45,7 @@ public abstract class Buildings extends GraphicalObject {
 
     }
 
+    public String getId() {
+        return id;
+    }
 }

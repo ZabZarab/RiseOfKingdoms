@@ -13,8 +13,10 @@ public class HouseSmall extends Buildings{
      * @param width
      * @param height
      */
-    public HouseSmall(double x, double y, double width, double height) {
-        super(x, y, width, height);
+    String id;
+
+    public HouseSmall(int x, int y, int width, int height, String id) {
+        super(x, y, width, height, id);
     }
 
     @Override
