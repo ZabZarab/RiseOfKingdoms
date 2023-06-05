@@ -5,8 +5,10 @@ import KAGO_framework.model.abitur.datenstrukturen.Edge;
 import KAGO_framework.model.abitur.datenstrukturen.Graph;
 import KAGO_framework.model.abitur.datenstrukturen.List;
 import KAGO_framework.model.abitur.datenstrukturen.Vertex;
+import KAGO_framework.view.DrawTool;
 import my_project.model.Buildings;
 import my_project.model.Hotbar;
+import my_project.model.HouseBig;
 import my_project.model.HouseSmall;
 
 /**
@@ -16,12 +18,13 @@ import my_project.model.HouseSmall;
 public class ProgramController {
 
     //Attribute
-
+    private int idCounter; // Zählt die Anzahl der erstellten Gebäude mit, um ID's für Die Gebäude zu generieren
 
     // Referenzen
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
     private Graph allBuildings; // Referenz auf ein Objekt der Klasse Graph - Verwaltet alle Gebäude als Knoten und Straßen als Kanten
-    private int idCounter; // Zählt die Anzahl der erstellten Gebäude mit, um ID's für Die Gebäude zu generieren
+
+
 
     /**
      * Konstruktor
@@ -33,6 +36,7 @@ public class ProgramController {
     public ProgramController(ViewController viewController){
         this.viewController = viewController;
         allBuildings = new Graph();
+
     }
 
     /**
@@ -42,8 +46,6 @@ public class ProgramController {
     public void startProgram() {
         // Erstelle ein Objekt der Klasse Ball und lasse es zeichnen
         addAll();
-        addHouse(100,100,100,100);
-        System.out.println(allBuildings.getVertices().getContent().getID());
     }
 
     /**
@@ -64,22 +66,36 @@ public class ProgramController {
         Hotbar hotbar = new Hotbar();
         viewController.draw(hotbar);
 
-        drawHouse(50, 640, 30, 20);
+        drawSHouse(50, 640);
     }
 
-    public void addHouse(int x, int y, int width, int height){
+    public void addSHouse(int x, int y){
         //Erstellt und zeichnet ein Haus als Objekt und einen Knoten mit einer ID
         String id = "b" + idCounter; // Erstellt eine ID
-        HouseSmall houseSmall = new HouseSmall(x,y,width,height,id);
+        HouseSmall houseSmall = new HouseSmall(x,y,id);
         viewController.draw(houseSmall);
         allBuildings.addVertex(new Vertex(id));
         idCounter++;
     }
+    public void addBHouse(int x, int y){
+        //Erstellt und zeichnet ein Haus als Objekt und einen Knoten mit einer ID
+        String id = "b" + idCounter; // Erstellt eine ID
+        HouseBig houseBig = new HouseBig(x,y,id);
+        viewController.draw(houseBig);
+        allBuildings.addVertex(new Vertex(id));
+        idCounter++;
+    }
 
-    public void drawHouse(int x, int y, int width, int height){
+    public void drawSHouse(int x, int y){
         //Erstellt und zeichnet ein Haus als Objekt (Nur zum zeichnen --> Keine Veränderung im Graphen)
-        HouseSmall houseSmall =new HouseSmall(x, y, width, height, null);
+        HouseSmall houseSmall =new HouseSmall(x, y,null);
         viewController.draw(houseSmall);
+    }
+
+    public void drawBHouse(int x, int y){
+        //Erstellt und zeichnet ein Haus als Objekt (Nur zum zeichnen --> Keine Veränderung im Graphen)
+        HouseBig houseBig =new HouseBig(x, y,null);
+        viewController.draw(houseBig);
     }
 
     public boolean addStreet(Buildings b1, Buildings b2){
