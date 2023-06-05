@@ -5,12 +5,10 @@ import KAGO_framework.model.abitur.datenstrukturen.Edge;
 import KAGO_framework.model.abitur.datenstrukturen.Graph;
 import KAGO_framework.model.abitur.datenstrukturen.List;
 import KAGO_framework.model.abitur.datenstrukturen.Vertex;
-import KAGO_framework.view.DrawTool;
 import my_project.model.Buildings;
 import my_project.model.Hotbar;
 import my_project.model.HouseBig;
 import my_project.model.HouseSmall;
-
 /**
  * Ein Objekt der Klasse ProgramController dient dazu das Programm zu steuern. Die updateProgram - Methode wird
  * mit jeder Frame im laufenden Programm aufgerufen.
@@ -36,7 +34,6 @@ public class ProgramController {
     public ProgramController(ViewController viewController){
         this.viewController = viewController;
         allBuildings = new Graph();
-
     }
 
     /**
@@ -65,8 +62,11 @@ public class ProgramController {
         // Zeichnet alle Elemente der Nutzeroberfläche
         Hotbar hotbar = new Hotbar();
         viewController.draw(hotbar);
+        viewController.register(hotbar);
 
-        drawSHouse(50, 640);
+        drawSHouse(50,625);
+
+
     }
 
     public void addSHouse(int x, int y){
