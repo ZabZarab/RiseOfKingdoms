@@ -16,13 +16,15 @@ public class HouseBig extends Buildings{
      */
     String id;
 
-    public HouseBig(int x, int y, int width, int height, String id) {
-        super(x, y, width, height, id);
+    public HouseBig(int x, int y, String id) {
+        super(x, y, id);
+        this.width = 30;
+        this.height = 20;
     }
 
     @Override
     public void draw(DrawTool drawTool) {
-        drawTool.setCurrentColor(Color.darkGray);
+        drawTool.setCurrentColor(Color.BLUE);
         drawTool.drawFilledRectangle(x, y, width, height);
         drawTool.drawFilledPolygon(x, y, x+width, y , x+width/2, y-height/2);
         drawTool.setCurrentColor(Color.BLACK);

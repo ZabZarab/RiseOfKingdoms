@@ -15,8 +15,10 @@ public class HouseSmall extends Buildings{
      */
     String id;
 
-    public HouseSmall(int x, int y, int width, int height, String id) {
-        super(x, y, width, height, id);
+    public HouseSmall(int x, int y, String id) {
+        super(x, y, id);
+        this.width = 30;
+        this.height = 20;
     }
 
     @Override

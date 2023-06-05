@@ -7,6 +7,7 @@ import KAGO_framework.model.abitur.datenstrukturen.List;
 import KAGO_framework.model.abitur.datenstrukturen.Vertex;
 import my_project.model.Buildings;
 import my_project.model.Hotbar;
+import my_project.model.HouseBig;
 import my_project.model.HouseSmall;
 
 /**
@@ -42,7 +43,6 @@ public class ProgramController {
     public void startProgram() {
         // Erstelle ein Objekt der Klasse Ball und lasse es zeichnen
         addAll();
-        addHouse(100,100,100,100);
         System.out.println(allBuildings.getVertices().getContent().getID());
     }
 
@@ -65,13 +65,22 @@ public class ProgramController {
         viewController.draw(hotbar);
 
         drawHouse(50, 640, 30, 20);
+
     }
 
-    public void addHouse(int x, int y, int width, int height){
+    public void addSmallHouse(int x, int y, int width, int height){
         //Erstellt und zeichnet ein Haus als Objekt und einen Knoten mit einer ID
         String id = "b" + idCounter; // Erstellt eine ID
         HouseSmall houseSmall = new HouseSmall(x,y,width,height,id);
         viewController.draw(houseSmall);
+        allBuildings.addVertex(new Vertex(id));
+        idCounter++;
+    }
+    public void addBigHouse(int x, int y, int width, int height){
+        //Erstellt und zeichnet ein Haus als Objekt und einen Knoten mit einer ID
+        String id = "b" + idCounter; // Erstellt eine ID
+        HouseBig houseBig = new HouseBig(x,y,width,height,id);
+        viewController.draw(houseBig);
         allBuildings.addVertex(new Vertex(id));
         idCounter++;
     }

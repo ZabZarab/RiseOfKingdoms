@@ -18,11 +18,9 @@ public abstract class Buildings extends GraphicalObject {
      */
     String id;
 
-    public Buildings(int x, int y, int width, int height, String id){
+    public Buildings(int x, int y, String id){
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
         this.id = id;
     }
 
