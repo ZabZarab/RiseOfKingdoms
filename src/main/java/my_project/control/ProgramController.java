@@ -52,6 +52,9 @@ public class ProgramController {
 
         houseSmall = new HouseSmall(mouse.getxPos(), mouse.getyPos(), null);
         viewController.draw(houseSmall);
+
+        houseBig = new HouseBig(mouse.getxPos(), mouse.getyPos(), null);
+        viewController.draw(houseBig);
     }
 
     /**
@@ -67,9 +70,21 @@ public class ProgramController {
             houseSmall.setX(50);
             houseSmall.setY(630);
         }
-        if(hotbar.isAddSHouse()){
+        if(hotbar.isAddSHouse() && hotbar.getSHB() == false){
             addSHouse(mouse.getxPos(), mouse.getyPos());
             hotbar.setAddSHouse(false);
+        }
+        if(hotbar.getBHB()){
+            houseBig.setX(mouse.getxPos());
+            houseBig.setY(mouse.getyPos());
+            System.out.println(mouse.getxPos());
+        }else{
+            houseBig.setX(175);
+            houseBig.setY(630);
+        }
+        if(hotbar.isAddBHouse() && hotbar.getBHB() == false){
+            addBHouse(mouse.getxPos(), mouse.getyPos());
+            hotbar.setAddBHouse(false);
         }
         //if( houseSmall.collidesWith(mouse) == true);
 
