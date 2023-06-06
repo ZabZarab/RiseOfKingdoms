@@ -17,11 +17,13 @@ public abstract class Buildings extends GraphicalObject {
      * @param y Startposition y
      */
     String id;
+    protected int price;
 
     public Buildings(int x, int y, String id){
         this.x = x;
         this.y = y;
         this.id = id;
+        this.price = price;
     }
 
 
@@ -45,5 +47,9 @@ public abstract class Buildings extends GraphicalObject {
 
     public String getId() {
         return id;
+    }
+
+    public int getPrice() {
+        return price;
     }
 }

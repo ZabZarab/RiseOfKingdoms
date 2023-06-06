@@ -20,6 +20,9 @@ public class Hotbar extends InteractiveGraphicalObject {
     private boolean bHB = false;
     private boolean addSHouse = false;
     private boolean addBHouse = false;
+    private int amountOfBuildings;
+    private int amountOfSmallH;
+    private int amountOfBigH;
 
     private Mouse mouse;
 
@@ -30,6 +33,9 @@ public class Hotbar extends InteractiveGraphicalObject {
         this.y = 700-height;
         this.width = Config.WINDOW_WIDTH;
         mouse = new Mouse();
+        this.amountOfBigH = 0;
+        this.amountOfSmallH = 0;
+        this.amountOfBuildings = 0;
     }
 
     @Override
@@ -46,6 +52,11 @@ public class Hotbar extends InteractiveGraphicalObject {
         drawTool.drawRectangle(x+140+25+125, y+5 , 125, 80);
         drawTool.drawRectangle(x+140+150+125+10, y+5 , 125, 80);
         //Mouse Position
+
+        //AmountsOf
+        drawTool.drawText(x+800, y+30, "Amount of Buildings: " + amountOfBuildings);
+        drawTool.drawText(x+800, y+50, "Small Houses: " + amountOfSmallH);
+        drawTool.drawText(x+800, y+70, "Big Houses: " + amountOfBigH);
     }
 
 
@@ -104,5 +115,29 @@ public class Hotbar extends InteractiveGraphicalObject {
 
     public void setAddBHouse(boolean addBHouse) {
         this.addBHouse = addBHouse;
+    }
+
+    public int getAmountOfBuildings() {
+        return amountOfBuildings;
+    }
+
+    public void setAmountOfBuildings(int amountOfBuildings) {
+        this.amountOfBuildings = amountOfBuildings;
+    }
+
+    public int getAmountOfSmallH() {
+        return amountOfSmallH;
+    }
+
+    public void setAmountOfSmallH(int amountOfSmallH) {
+        this.amountOfSmallH = amountOfSmallH;
+    }
+
+    public int getAmountOfBigH() {
+        return amountOfBigH;
+    }
+
+    public void setAmountOfBigH(int amountOfBigH) {
+        this.amountOfBigH = amountOfBigH;
     }
 }

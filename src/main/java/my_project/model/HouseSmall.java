@@ -19,6 +19,7 @@ public class HouseSmall extends Buildings{
         super(x, y, id);
         this.width = 30;
         this.height = 20;
+        this.price = 1000;
     }
 
     @Override
@@ -29,4 +30,6 @@ public class HouseSmall extends Buildings{
         drawTool.setCurrentColor(Color.BLACK);
         drawTool.drawPolygon(x, y, x+width, y , x+width/2, y-height/2);
     }
+
+
 }

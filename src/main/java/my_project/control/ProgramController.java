@@ -26,6 +26,7 @@ public class ProgramController {
     public Mouse mouse;
     private HouseSmall houseSmall;
     private HouseBig houseBig;
+    private Money money;
 
     /**
      * Konstruktor
@@ -38,6 +39,7 @@ public class ProgramController {
         this.viewController = viewController;
         allBuildings = new Graph();
         mouse = new Mouse();
+        money = new Money();
     }
 
     /**
@@ -47,12 +49,15 @@ public class ProgramController {
     public void startProgram() {
         // Erstelle ein Objekt der Klasse Ball und lasse es zeichnen
         addAll();
-
+        //Geld
+        viewController.draw(money);
+        viewController.register(money);
+        //Maus
         viewController.register(mouse);
-
+        //Haus klein
         houseSmall = new HouseSmall(mouse.getxPos(), mouse.getyPos(), null);
         viewController.draw(houseSmall);
-
+        //haus groß
         houseBig = new HouseBig(mouse.getxPos(), mouse.getyPos(), null);
         viewController.draw(houseBig);
     }
@@ -62,7 +67,9 @@ public class ProgramController {
      * @param dt Zeit seit letzter Frame
      */
     public void updateProgram(double dt){
-        if(hotbar.getSHB()){
+
+        //Drag and drop vom kleinen haus
+        if(hotbar.getSHB() && money.getMoney() >= 1000){
             houseSmall.setX(mouse.getxPos());
             houseSmall.setY(mouse.getyPos());
             System.out.println(mouse.getxPos());
@@ -70,11 +77,15 @@ public class ProgramController {
             houseSmall.setX(50);
             houseSmall.setY(630);
         }
-        if(hotbar.isAddSHouse() && hotbar.getSHB() == false){
+        if(hotbar.isAddSHouse() && hotbar.getSHB() == false && money.getMoney() >= 1000){
             addSHouse(mouse.getxPos(), mouse.getyPos());
             hotbar.setAddSHouse(false);
+            hotbar.setAmountOfSmallH(hotbar.getAmountOfSmallH()+1);
+            money.setMoney(money.getMoney()-houseSmall.getPrice());
         }
-        if(hotbar.getBHB()){
+
+        //Drag and drop vom großen haus
+        if(hotbar.getBHB() && money.getMoney() >= 2000){
             houseBig.setX(mouse.getxPos());
             houseBig.setY(mouse.getyPos());
             System.out.println(mouse.getxPos());
@@ -82,10 +93,13 @@ public class ProgramController {
             houseBig.setX(175);
             houseBig.setY(630);
         }
-        if(hotbar.isAddBHouse() && hotbar.getBHB() == false){
+        if(hotbar.isAddBHouse() && hotbar.getBHB() == false && money.getMoney() >= 2000){
             addBHouse(mouse.getxPos(), mouse.getyPos());
             hotbar.setAddBHouse(false);
+            hotbar.setAmountOfBigH(hotbar.getAmountOfBigH()+1);
+            money.setMoney(money.getMoney()-houseBig.getPrice());
         }
+        hotbar.setAmountOfBuildings(hotbar.getAmountOfBigH()+hotbar.getAmountOfSmallH());
         //if( houseSmall.collidesWith(mouse) == true);
 
     }
