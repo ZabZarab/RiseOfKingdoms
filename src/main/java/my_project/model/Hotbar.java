@@ -18,6 +18,7 @@ public class Hotbar extends InteractiveGraphicalObject {
 
     private boolean sHB = false;
     private boolean bHB = false;
+    private boolean addSHouse = false;
 
     private Mouse mouse;
 
@@ -54,7 +55,6 @@ public class Hotbar extends InteractiveGraphicalObject {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println(mouse.getxPos());
         if (e.getX() >= 5 && e.getX() <= 130 && e.getY() >= 605 && e.getY() <= 685 && e.getButton() == MouseEvent.BUTTON1) {
             System.out.println("Mutter*innen");
             sHB = true;
@@ -63,7 +63,10 @@ public class Hotbar extends InteractiveGraphicalObject {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        sHB = false;
+        if(!addSHouse){
+            addSHouse = true;
+        }
     }
 
     public boolean getSHB(){
@@ -73,7 +76,12 @@ public class Hotbar extends InteractiveGraphicalObject {
     public boolean getBHB(){
         return bHB;
     }
-    
 
+    public boolean isAddSHouse() {
+        return addSHouse;
+    }
 
+    public void setAddSHouse(boolean addSHouse) {
+        this.addSHouse = addSHouse;
+    }
 }

@@ -22,7 +22,12 @@ public class Mouse extends InteractiveGraphicalObject{
     public void mouseMoved(MouseEvent e) {
         xPos = e.getX(); // X-Position der Maus
         yPos = e.getY(); // X-Position der Maus
-        System.out.println("fu");
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        xPos = e.getX(); // X-Position der Maus
+        yPos = e.getY(); // X-Position der Maus
     }
 
     public int getxPos() {

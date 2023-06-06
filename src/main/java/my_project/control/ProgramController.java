@@ -49,6 +49,9 @@ public class ProgramController {
         addAll();
 
         viewController.register(mouse);
+
+        houseSmall = new HouseSmall(mouse.getxPos(), mouse.getyPos(), null);
+        viewController.draw(houseSmall);
     }
 
     /**
@@ -57,7 +60,16 @@ public class ProgramController {
      */
     public void updateProgram(double dt){
         if(hotbar.getSHB()){
-            drawSHouse(mouse.getxPos(), mouse.getyPos());
+            houseSmall.setX(mouse.getxPos());
+            houseSmall.setY(mouse.getyPos());
+            System.out.println(mouse.getxPos());
+        }else{
+            houseSmall.setX(50);
+            houseSmall.setY(630);
+        }
+        if(hotbar.isAddSHouse()){
+            addSHouse(mouse.getxPos(), mouse.getyPos());
+            hotbar.setAddSHouse(false);
         }
         //if( houseSmall.collidesWith(mouse) == true);
 
