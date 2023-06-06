@@ -1,5 +1,6 @@
 package my_project.model;
 
+import KAGO_framework.control.ViewController;
 import KAGO_framework.model.InteractiveGraphicalObject;
 import KAGO_framework.view.DrawTool;
 import my_project.Config;
@@ -11,7 +12,10 @@ import my_project.view.InputManager;
 
 public class Mouse extends InteractiveGraphicalObject{
 
-    public Mouse(){
+    private ViewController viewController;
+
+    public Mouse(ViewController viewController){
+        this.viewController = viewController;
         this.x = InputManager.mouseX;
         this.y = InputManager.mouseY;
     }

@@ -18,8 +18,8 @@ public class HouseBig extends Buildings{
 
     public HouseBig(int x, int y, String id) {
         super(x, y, id);
-        this.width = 30;
-        this.height = 20;
+        this.width = 45;
+        this.height = 30;
     }
 
     @Override

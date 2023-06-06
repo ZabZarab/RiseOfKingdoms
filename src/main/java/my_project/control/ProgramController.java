@@ -23,6 +23,9 @@ public class ProgramController {
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
     private Graph allBuildings; // Referenz auf ein Objekt der Klasse Graph - Verwaltet alle Gebäude als Knoten und Straßen als Kanten
     private Hotbar hotbar;
+    private HouseSmall houseSmall;
+    private HouseBig houseBig;
+    private Mouse mouse = new Mouse(viewController);
 
 
     /**
@@ -44,7 +47,6 @@ public class ProgramController {
     public void startProgram() {
         // Erstelle ein Objekt der Klasse Ball und lasse es zeichnen
         addAll();
-        Mouse mouse = new Mouse();
     }
 
     /**
@@ -55,7 +57,7 @@ public class ProgramController {
         if(hotbar.getSHB()){
             drawSHouse(InputManager.mouseX, InputManager.mouseY);
         }
-
+        if( houseSmall.collidesWith(mouse) == true);
 
     }
 
@@ -72,8 +74,8 @@ public class ProgramController {
 
 
 
-        drawSHouse(50,625);
-
+        drawSHouse(50,630);
+        drawBHouse(175, 630);
 
     }
 
