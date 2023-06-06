@@ -22,7 +22,7 @@ public class ProgramController {
     // Referenzen
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
     private Graph allBuildings; // Referenz auf ein Objekt der Klasse Graph - Verwaltet alle Gebäude als Knoten und Straßen als Kanten
-
+    private Hotbar hotbar;
 
 
     /**
@@ -52,6 +52,10 @@ public class ProgramController {
      * @param dt Zeit seit letzter Frame
      */
     public void updateProgram(double dt){
+        if(hotbar.getSHB()){
+            drawSHouse(InputManager.mouseX, InputManager.mouseY);
+        }
+
 
     }
 
@@ -62,9 +66,11 @@ public class ProgramController {
 
     public void drawUI(){
         // Zeichnet alle Elemente der Nutzeroberfläche
-        Hotbar hotbar = new Hotbar();
+        hotbar = new Hotbar();
         viewController.draw(hotbar);
         viewController.register(hotbar);
+
+
 
         drawSHouse(50,625);
 

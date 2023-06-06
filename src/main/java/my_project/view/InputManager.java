@@ -10,6 +10,9 @@ import java.awt.event.MouseEvent;
  */
 public class InputManager extends InteractiveGraphicalObject {
 
+    public static int mouseX;
+    public static int mouseY;
+
     private ProgramController programController;
 
     /**
@@ -22,9 +25,16 @@ public class InputManager extends InteractiveGraphicalObject {
 
     }
 
+
+    public void mouseMoved(MouseEvent e) {
+        mouseX = e.getX(); // X-Position der Maus
+        mouseY = e.getY(); // X-Position der Maus
+    }
+
     @Override
     public void mouseReleased(MouseEvent e) {
 
     }
+
 
 }

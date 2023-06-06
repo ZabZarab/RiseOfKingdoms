@@ -9,9 +9,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import my_project.model.HouseBig;
 import my_project.model.HouseSmall;
+import my_project.view.InputManager;
 
 
 public class Hotbar extends InteractiveGraphicalObject {
+
+    private boolean sHB = false;
+    private boolean bHB = false;
 
     public Hotbar(){
         this.x = 0;
@@ -42,6 +46,7 @@ public class Hotbar extends InteractiveGraphicalObject {
 
     }
 
+    @Override
     public void mousePressed(MouseEvent e) {
         System.out.println("");
         if (InputManager.mouseX >= 5 && InputManager.mouseX <= 130 && InputManager.mouseY >= 605 && InputManager.mouseY <= 685 && e.getButton() == MouseEvent.BUTTON1) {
@@ -50,22 +55,19 @@ public class Hotbar extends InteractiveGraphicalObject {
         }
     }
 
-    public boolean smallHouseButton(MouseEvent e){
-        System.out.println("false");
-        if(e.getX() >= 5 && e.getX() <= 130 && e.getY() >= 605 && e.getY() <= 685){
-            System.out.println("true");
-            return true;
-        }
-        return false;
-    }
-
-    public void mouseMoved(MouseEvent e) {
-        int x = e.getX(); // X-Position der Maus
-        System.out.println("X-Position: " + x);
-        int y = e.getY(); // X-Position der Maus
-        System.out.println("y-Position: " + y);
+    @Override
+    public void mouseReleased(MouseEvent e) {
 
     }
+
+    public boolean getSHB(){
+        return sHB;
+    }
+
+    public boolean getBHB(){
+        return bHB;
+    }
+
 
 
 }
