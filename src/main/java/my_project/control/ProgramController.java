@@ -5,10 +5,11 @@ import KAGO_framework.model.abitur.datenstrukturen.Edge;
 import KAGO_framework.model.abitur.datenstrukturen.Graph;
 import KAGO_framework.model.abitur.datenstrukturen.List;
 import KAGO_framework.model.abitur.datenstrukturen.Vertex;
-import my_project.model.Buildings;
-import my_project.model.Hotbar;
-import my_project.model.HouseBig;
-import my_project.model.HouseSmall;
+import my_project.model.*;
+import my_project.view.InputManager;
+
+import java.awt.event.MouseEvent;
+
 /**
  * Ein Objekt der Klasse ProgramController dient dazu das Programm zu steuern. Die updateProgram - Methode wird
  * mit jeder Frame im laufenden Programm aufgerufen.
@@ -43,6 +44,7 @@ public class ProgramController {
     public void startProgram() {
         // Erstelle ein Objekt der Klasse Ball und lasse es zeichnen
         addAll();
+        Mouse mouse = new Mouse();
     }
 
     /**

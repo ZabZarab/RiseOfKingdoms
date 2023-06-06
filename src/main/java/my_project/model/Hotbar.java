@@ -44,8 +44,9 @@ public class Hotbar extends InteractiveGraphicalObject {
 
     public void mousePressed(MouseEvent e) {
         System.out.println("");
-        if (e.getButton() == MouseEvent.BUTTON1) {
+        if (InputManager.mouseX >= 5 && InputManager.mouseX <= 130 && InputManager.mouseY >= 605 && InputManager.mouseY <= 685 && e.getButton() == MouseEvent.BUTTON1) {
             System.out.println("Mutter*innen");
+            sHB = true;
         }
     }
 
