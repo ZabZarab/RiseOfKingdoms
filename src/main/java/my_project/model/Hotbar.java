@@ -7,6 +7,8 @@ import my_project.Config;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+
+import my_project.control.ProgramController;
 import my_project.model.HouseBig;
 import my_project.model.HouseSmall;
 import my_project.view.InputManager;
@@ -17,11 +19,15 @@ public class Hotbar extends InteractiveGraphicalObject {
     private boolean sHB = false;
     private boolean bHB = false;
 
+    private Mouse mouse;
+
+
     public Hotbar(){
         this.x = 0;
         this.height = 100;
         this.y = 700-height;
         this.width = Config.WINDOW_WIDTH;
+        mouse = new Mouse();
     }
 
     @Override
@@ -48,8 +54,8 @@ public class Hotbar extends InteractiveGraphicalObject {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println("");
-        if (InputManager.mouseX >= 5 && InputManager.mouseX <= 130 && InputManager.mouseY >= 605 && InputManager.mouseY <= 685 && e.getButton() == MouseEvent.BUTTON1) {
+        System.out.println(mouse.getxPos());
+        if (e.getX() >= 5 && e.getX() <= 130 && e.getY() >= 605 && e.getY() <= 685 && e.getButton() == MouseEvent.BUTTON1) {
             System.out.println("Mutter*innen");
             sHB = true;
         }
@@ -67,7 +73,7 @@ public class Hotbar extends InteractiveGraphicalObject {
     public boolean getBHB(){
         return bHB;
     }
-
+    
 
 
 }

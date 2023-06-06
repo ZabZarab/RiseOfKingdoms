@@ -1,6 +1,5 @@
 package my_project.model;
 
-import KAGO_framework.control.ViewController;
 import KAGO_framework.model.InteractiveGraphicalObject;
 import KAGO_framework.view.DrawTool;
 import my_project.Config;
@@ -12,11 +11,25 @@ import my_project.view.InputManager;
 
 public class Mouse extends InteractiveGraphicalObject{
 
-    private ViewController viewController;
+    private int xPos;
+    private int yPos;
 
-    public Mouse(ViewController viewController){
-        this.viewController = viewController;
-        this.x = InputManager.mouseX;
-        this.y = InputManager.mouseY;
+    public Mouse(){
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        xPos = e.getX(); // X-Position der Maus
+        yPos = e.getY(); // X-Position der Maus
+        System.out.println("fu");
+    }
+
+    public int getxPos() {
+        return xPos;
+    }
+
+    public int getyPos() {
+        return yPos;
     }
 }
