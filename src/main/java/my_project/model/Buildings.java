@@ -18,12 +18,14 @@ public abstract class Buildings extends GraphicalObject {
      */
     String id;
     protected int price;
+    protected boolean unplacapleCircle = false; //if true, draws red radius blabla
 
     public Buildings(int x, int y, String id){
         this.x = x;
         this.y = y;
         this.id = id;
         this.price = price;
+        radius = 60;
     }
 
 
@@ -32,6 +34,11 @@ public abstract class Buildings extends GraphicalObject {
      */
     @Override
     public void draw(DrawTool drawTool) {
+        if(id!=null){
+            drawTool.setCurrentColor(100, 100, 100, 50);
+            drawTool.drawFilledCircle(x+width/2, y+height/2, radius);
+        }
+
 
     }
 
@@ -51,5 +58,13 @@ public abstract class Buildings extends GraphicalObject {
 
     public int getPrice() {
         return price;
+    }
+
+    public void setUnplacapleCircle(boolean unplacapleCircle) {
+        this.unplacapleCircle = unplacapleCircle;
+    }
+
+    public boolean isUnplacapleCircle() {
+        return unplacapleCircle;
     }
 }

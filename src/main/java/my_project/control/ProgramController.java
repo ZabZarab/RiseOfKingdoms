@@ -61,10 +61,10 @@ public class ProgramController {
         //MAIN
         addMAINHouse(500,300);
         //Haus klein
-        houseSmall = new HouseSmall(mouse.getxPos(), mouse.getyPos(), null);
+        houseSmall = new HouseSmall(0, 0, null);
         viewController.draw(houseSmall);
         //haus groß
-        houseBig = new HouseBig(mouse.getxPos(), mouse.getyPos(), null);
+        houseBig = new HouseBig(0, 0, null);
         viewController.draw(houseBig);
     }
 
@@ -73,43 +73,45 @@ public class ProgramController {
      * @param dt Zeit seit letzter Frame
      */
     public void updateProgram(double dt){
+
         //Drag and drop vom kleinen haus
         if(hotbar.getSHB() && player.getMoney() >= 1000){
-            houseSmall.setX(mouse.getxPos());
-            houseSmall.setY(mouse.getyPos());
-            System.out.println(mouse.getxPos());
+            houseSmall.setX(mouse.getxPos()-houseSmall.getWidth()/2);
+            houseSmall.setY(mouse.getyPos()-houseSmall.getHeight()/2);
         }else{
             houseSmall.setX(50);
             houseSmall.setY(630);
         }
         //Loslassen
-        if(hotbar.isAddSHouse() && hotbar.getSHB() == false && player.getMoney() >= 1000){
-            addSHouse(mouse.getxPos(), mouse.getyPos());
+        if(hotbar.isAddSHouse() && hotbar.getSHB() == false && player.getMoney() >= 1000 && checkIfCollides()){
+            addSHouse(mouse.getxPos()- (int) houseSmall.getWidth()/2, mouse.getyPos()- (int) houseSmall.getHeight()/2);
             hotbar.setAddSHouse(false);
             hotbar.setAmountOfSmallH(hotbar.getAmountOfSmallH()+1);
             player.setMoney(player.getMoney()-houseSmall.getPrice());
+        } else{
+            hotbar.setAddSHouse(false);
         }
 
         //Drag and drop vom großen haus
         if(hotbar.getBHB() && player.getMoney() >= 2000){
-            houseBig.setX(mouse.getxPos());
-            houseBig.setY(mouse.getyPos());
-            System.out.println(mouse.getxPos());
+            houseBig.setX(mouse.getxPos()-houseBig.getWidth()/2);
+            houseBig.setY(mouse.getyPos()-houseBig.getHeight()/2);
         }else{
             houseBig.setX(175);
             houseBig.setY(630);
         }
-        if(hotbar.isAddBHouse() && hotbar.getBHB() == false && player.getMoney() >= 2000){
+        if(hotbar.isAddBHouse() && hotbar.getBHB() == false && player.getMoney() >= 2000 && checkIfCollides()){
             addBHouse(mouse.getxPos(), mouse.getyPos());
             hotbar.setAddBHouse(false);
             hotbar.setAmountOfBigH(hotbar.getAmountOfBigH()+1);
             player.setMoney(player.getMoney()-houseBig.getPrice());
+        }else{
+            hotbar.setAddBHouse(false);
         }
         hotbar.setAmountOfBuildings(hotbar.getAmountOfBigH()+hotbar.getAmountOfSmallH());
         if(!carS.collidesWith(carS.getX2(),carS.getY())) carS.driveToOneHouse(carS.getX(), carS.getY(), 0, 400, dt);
         if(!carB.collidesWith(carB.getX2(),carB.getY())) carB.driveToOneHouse(carB.getX(), carB.getY(), 0, 400, dt);
         //System.out.println(carS.isGo());
-        System.out.println(carS.getWidth());
 
     }
 
@@ -166,14 +168,14 @@ public class ProgramController {
 
     public void drawSHouse(int x, int y){
         //Erstellt und zeichnet ein Haus als Objekt (Nur zum zeichnen --> Keine Veränderung im Graphen)
-        HouseSmall houseSmall =new HouseSmall(x, y,null);
-        viewController.draw(houseSmall);
+        HouseSmall hS =new HouseSmall(x, y,null);
+        viewController.draw(hS);
     }
 
     public void drawBHouse(int x, int y){
         //Erstellt und zeichnet ein Haus als Objekt (Nur zum zeichnen --> Keine Veränderung im Graphen)
-        HouseBig houseBig =new HouseBig(x, y,null);
-        viewController.draw(houseBig);
+        HouseBig hB =new HouseBig(x, y,null);
+        viewController.draw(hB);
     }
 
     public boolean addStreet(Buildings b1, Buildings b2){
@@ -187,17 +189,27 @@ public class ProgramController {
                 b.next();
             }
             allBuildings.addEdge(new Edge(v1 , v2 , 1));
+            Street street = new Street(b1.getX()+b1.getWidth()/2, b1.getY()+b1.getHeight()/2,b2.getX()+b2.getWidth()/2,b2.getY()+b2.getHeight()/2);
+            viewController.draw(street);
             return true;
         }
         return false;
     }
 
-    public boolean checkIfCollides(Buildings b){
+    public boolean checkIfCollides(){
         buildingsList.toFirst();
-        while(buildingsList.hasAccess()){
-            if(b.collidesWith(buildingsList.getContent())) return false;
+        if(!buildingsList.isEmpty()){
+            while(buildingsList.hasAccess()){
+                if(buildingsList.getContent().getDistanceToPoint(mouse.getxPos(), mouse.getyPos())<66){
+                    System.out.println("urmom"); return false;
+                }
+
+                buildingsList.next();
+            }
+            return true;
         }
         return true;
+
     }
 
 

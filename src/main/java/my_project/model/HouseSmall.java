@@ -24,6 +24,7 @@ public class HouseSmall extends Buildings{
 
     @Override
     public void draw(DrawTool drawTool) {
+        super.draw(drawTool);
         drawTool.setCurrentColor(Color.darkGray);
         drawTool.drawFilledRectangle(x, y, width, height);
         drawTool.drawFilledPolygon(x, y, x+width, y , x+width/2, y-height/2);

@@ -25,10 +25,13 @@ public class HouseBig extends Buildings{
 
     @Override
     public void draw(DrawTool drawTool) {
+        super.draw(drawTool);
         drawTool.setCurrentColor(Color.BLUE);
         drawTool.drawFilledRectangle(x, y, width, height);
         drawTool.drawFilledPolygon(x, y, x+width, y , x+width/2, y-height/2);
         drawTool.setCurrentColor(Color.BLACK);
         drawTool.drawPolygon(x, y, x+width, y , x+width/2, y-height/2);
     }
+
+
 }

@@ -152,6 +152,14 @@ public class GraphicalObject implements Drawable {
         return false;
     }
 
+    public boolean collidesWithCircle(double pX, double pY){
+            double midX = x + radius;
+            double midY = y + radius;
+            if(Math.sqrt( Math.pow(midX-pX, 2) + Math.pow(midY-pY,2)) < radius) return true;
+
+        return false;
+    }
+
     /**
      * Berechnet die Distanz zwischen dem Mittelpunkt dieses Objekts und dem Mittelpunkt des übergebenen Objekts.
      * @param gO Das Objekt zu dem die Entfernung gemessen wird.
@@ -172,6 +180,18 @@ public class GraphicalObject implements Drawable {
             midX2 = midX2 + gO.getWidth()/2;
             midY2 = midY2 + gO.getHeight()/2;
         }
+
+        // Berechne die Distanz zwischen den Punkten mit dem Satz des Pythagoras
+        return Math.sqrt( Math.pow(midX-midX2, 2) + Math.pow(midY-midY2,2));
+    }
+
+    public double getDistanceToPoint(double pX, double pY){
+        // Berechne die Mittelpunkte der Objekte
+            double midX = x + width/2;
+            double midY = y + height/2;
+
+        double midX2 = pX;
+        double midY2 = pY;
 
         // Berechne die Distanz zwischen den Punkten mit dem Satz des Pythagoras
         return Math.sqrt( Math.pow(midX-midX2, 2) + Math.pow(midY-midY2,2));
