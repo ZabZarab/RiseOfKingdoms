@@ -24,6 +24,7 @@ public class ProgramController {
     private HouseSmall houseSmall;
     private HouseBig houseBig;
     private Player player;
+    private HondaCivic carS;
 
     /**
      * Konstruktor
@@ -37,6 +38,7 @@ public class ProgramController {
         allBuildings = new Graph();
         mouse = new Mouse();
         player = new Player();
+
     }
 
     /**
@@ -75,8 +77,6 @@ public class ProgramController {
             houseSmall.setY(630);
         }
         //Loslassen
-        System.out.println("(" + mouse.getxPos() + "|"+mouse.getyPos()+")" +
-                mouse.collidesWith(0,0));
         if(hotbar.isAddSHouse() && hotbar.getSHB() == false && player.getMoney() >= 1000 && mouse.getyPos() <585 && mouse.collidesWith(houseSmall) == false){
             addSHouse(mouse.getxPos(), mouse.getyPos());
             hotbar.setAddSHouse(false);
@@ -101,6 +101,7 @@ public class ProgramController {
         }
         hotbar.setAmountOfBuildings(hotbar.getAmountOfBigH()+hotbar.getAmountOfSmallH());
         //if( houseSmall.collidesWith(mouse) == true);
+        carS.driveToOneHouse(100, 100 , 200, 200, dt);
 
     }
 
@@ -114,6 +115,10 @@ public class ProgramController {
         hotbar = new Hotbar();
         viewController.draw(hotbar);
         viewController.register(hotbar);
+
+        carS = new HondaCivic(100, 100);
+        viewController.draw(carS);
+        viewController.register(carS);
 
 
 
