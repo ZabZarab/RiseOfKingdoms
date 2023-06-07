@@ -9,19 +9,18 @@ import java.awt.*;
 public abstract class Vehicle extends InteractiveGraphicalObject {
 
     protected double time;
-    protected boolean go;
     protected double x1;
     protected double y1;
     protected double x2;
     protected double y2;
     protected double mX;
     protected double mY;
+    protected boolean right;
 
     protected Vehicle(double x, double y){
         this.x = x;
         this.y = y;
         this.time = 0;
-        this.go = false;
     }
     @Override
     public void draw(DrawTool drawTool){
@@ -33,27 +32,31 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
     }
 
     public void driveToOneHouse(double x1, double y1, double x2, double y2, double dt){
-        go = true;
         //this.yes = true;
-        if(go){
+        if(!collidesWith(x2,y2)){
             this.mX = 15;
             this.mY = 15 * ((y2-y1)/(x2-x1));
             if(x2 <= x1 && y2 <= y1){ //oben links
                 this.x = x-dt*mX;
                 this.y = y-dt*mY;
+                right = false;
             }
             if(x1 <= x2 && y2 <= y1 ){ //oben rechts
                 this.x = x+dt*mX;
                 this.y = y-dt*mY;
+                right = true;
             }
             if(y1 <= y2 && x1 <= x2 ){//unten rechts
                 this.x = x+dt*mX;
                 this.y = y+dt*mY;
+                right = true;
             }
             if(y1 <= y2 && x2 <= x1){// unten links
                 this.x = x-dt*mX;
                 this.y = y-dt*mY;
+                right = false;
             }
+
         }
         //System.out.println("X: " + (int) x + " Y: " +(int) y);
         //System.out.println(mY);
@@ -99,11 +102,5 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
         this.y2 = y2;
     }
 
-    public boolean isGo() {
-        return go;
-    }
-
-    public void setGo(boolean go) {
-        this.go = go;
-    }
+    public boolean getRight(){return right;}
 }

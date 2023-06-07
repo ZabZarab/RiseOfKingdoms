@@ -14,7 +14,7 @@ import my_project.model.*;
 public class ProgramController {
 
     //Attribute
-    private int idCounter; // Zählt die Anzahl der erstellten Gebäude mit, um ID's für Die Gebäude zu generieren
+    private int idCounter = 1; // Zählt die Anzahl der erstellten Gebäude mit, um ID's für Die Gebäude zu generieren
 
     // Referenzen
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
@@ -25,8 +25,10 @@ public class ProgramController {
     public Mouse mouse;
     private HouseSmall houseSmall;
     private HouseBig houseBig;
+    private Main MAIN;
     private Player player;
     private HondaCivic carS;
+    private Truck carB;
 
     /**
      * Konstruktor
@@ -56,6 +58,8 @@ public class ProgramController {
         viewController.register(player);
         //Maus
         viewController.register(mouse);
+        //MAIN
+        addMAINHouse(500,300);
         //Haus klein
         houseSmall = new HouseSmall(mouse.getxPos(), mouse.getyPos(), null);
         viewController.draw(houseSmall);
@@ -69,7 +73,6 @@ public class ProgramController {
      * @param dt Zeit seit letzter Frame
      */
     public void updateProgram(double dt){
-
         //Drag and drop vom kleinen haus
         if(hotbar.getSHB() && player.getMoney() >= 1000){
             houseSmall.setX(mouse.getxPos());
@@ -103,13 +106,10 @@ public class ProgramController {
             player.setMoney(player.getMoney()-houseBig.getPrice());
         }
         hotbar.setAmountOfBuildings(hotbar.getAmountOfBigH()+hotbar.getAmountOfSmallH());
-        if(houseSmall.collidesWith(mouse.getxPos(), mouse.getyPos()) == true){
-
-        }
-        if(carS.getX() != carS.getX2() ) carS.driveToOneHouse(carS.getX(), carS.getY(), 200, 400, dt);
-        if(carS.getX() == carS.getX2()) carS.setGo(false);
+        if(!carS.collidesWith(carS.getX2(),carS.getY())) carS.driveToOneHouse(carS.getX(), carS.getY(), 0, 400, dt);
+        if(!carB.collidesWith(carB.getX2(),carB.getY())) carB.driveToOneHouse(carB.getX(), carB.getY(), 0, 400, dt);
         //System.out.println(carS.isGo());
-        System.out.println(carS.getX());
+        System.out.println(carS.getWidth());
 
     }
 
@@ -126,7 +126,8 @@ public class ProgramController {
 
         carS = new HondaCivic(100, 100);
         viewController.draw(carS);
-        viewController.register(carS);
+        carB = new Truck(200,100);
+        viewController.draw(carB);
 
 
 
@@ -151,6 +152,15 @@ public class ProgramController {
         viewController.draw(hB);
         allBuildings.addVertex(new Vertex(id));
         buildingsList.append(hB);
+        idCounter++;
+    }
+    public void addMAINHouse(int x, int y){
+        //Erstellt und zeichnet ein Haus als Objekt und einen Knoten mit einer ID
+        String id = "b0"; // Erstellt eine ID
+        Main MAIN = new Main(x,y,id);
+        viewController.draw(MAIN);
+        allBuildings.addVertex(new Vertex(id));
+        buildingsList.append(MAIN);
         idCounter++;
     }
 
