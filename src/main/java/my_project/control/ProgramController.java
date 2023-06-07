@@ -19,6 +19,8 @@ public class ProgramController {
     // Referenzen
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
     private Graph allBuildings; // Referenz auf ein Objekt der Klasse Graph - Verwaltet alle Gebäude als Knoten und Straßen als Kanten
+    private List<Buildings> buildingsList; // Referenz auf ein Objekt der Klasse List mit dem ContentType Buildings - Verwaltet alle Gebäude in einer Liste
+
     private Hotbar hotbar;
     public Mouse mouse;
     private HouseSmall houseSmall;
@@ -36,6 +38,7 @@ public class ProgramController {
     public ProgramController(ViewController viewController){
         this.viewController = viewController;
         allBuildings = new Graph();
+        buildingsList = new List<>();
         mouse = new Mouse();
         player = new Player();
 
@@ -77,7 +80,7 @@ public class ProgramController {
             houseSmall.setY(630);
         }
         //Loslassen
-        if(hotbar.isAddSHouse() && hotbar.getSHB() == false && player.getMoney() >= 1000 && mouse.getyPos() <585 && mouse.collidesWith(houseSmall) == false){
+        if(hotbar.isAddSHouse() && hotbar.getSHB() == false && player.getMoney() >= 1000){
             addSHouse(mouse.getxPos(), mouse.getyPos());
             hotbar.setAddSHouse(false);
             hotbar.setAmountOfSmallH(hotbar.getAmountOfSmallH()+1);
@@ -93,14 +96,16 @@ public class ProgramController {
             houseBig.setX(175);
             houseBig.setY(630);
         }
-        if(hotbar.isAddBHouse() && hotbar.getBHB() == false && player.getMoney() >= 2000 && mouse.getyPos() <580){
+        if(hotbar.isAddBHouse() && hotbar.getBHB() == false && player.getMoney() >= 2000){
             addBHouse(mouse.getxPos(), mouse.getyPos());
             hotbar.setAddBHouse(false);
             hotbar.setAmountOfBigH(hotbar.getAmountOfBigH()+1);
             player.setMoney(player.getMoney()-houseBig.getPrice());
         }
         hotbar.setAmountOfBuildings(hotbar.getAmountOfBigH()+hotbar.getAmountOfSmallH());
-        //if( houseSmall.collidesWith(mouse) == true);
+        if(houseSmall.collidesWith(mouse.getxPos(), mouse.getyPos()) == true){
+
+        }
         carS.driveToOneHouse(100, 100 , 200, 200, dt);
 
     }
@@ -130,17 +135,19 @@ public class ProgramController {
     public void addSHouse(int x, int y){
         //Erstellt und zeichnet ein Haus als Objekt und einen Knoten mit einer ID
         String id = "b" + idCounter; // Erstellt eine ID
-        HouseSmall houseSmall = new HouseSmall(x,y,id);
-        viewController.draw(houseSmall);
+        HouseSmall hS = new HouseSmall(x,y,id);
+        viewController.draw(hS);
         allBuildings.addVertex(new Vertex(id));
+        buildingsList.append(hS);
         idCounter++;
     }
     public void addBHouse(int x, int y){
         //Erstellt und zeichnet ein Haus als Objekt und einen Knoten mit einer ID
         String id = "b" + idCounter; // Erstellt eine ID
-        HouseBig houseBig = new HouseBig(x,y,id);
-        viewController.draw(houseBig);
+        HouseBig hB = new HouseBig(x,y,id);
+        viewController.draw(hB);
         allBuildings.addVertex(new Vertex(id));
+        buildingsList.append(hB);
         idCounter++;
     }
 
@@ -171,4 +178,14 @@ public class ProgramController {
         }
         return false;
     }
+
+    public boolean checkIfCollides(Buildings b){
+        buildingsList.toFirst();
+        while(buildingsList.hasAccess()){
+            if(b.collidesWith(buildingsList.getContent())) return false;
+        }
+        return true;
+    }
+
+
 }

@@ -24,15 +24,12 @@ public class Hotbar extends InteractiveGraphicalObject {
     private int amountOfSmallH;
     private int amountOfBigH;
 
-    private Mouse mouse;
-
 
     public Hotbar(){
         this.x = 0;
         this.height = 100;
         this.y = 700-height;
         this.width = Config.WINDOW_WIDTH;
-        mouse = new Mouse();
         this.amountOfBigH = 0;
         this.amountOfSmallH = 0;
         this.amountOfBuildings = 0;
@@ -79,15 +76,15 @@ public class Hotbar extends InteractiveGraphicalObject {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(sHB == true && bHB == false){
+        if(sHB == true){
             sHB = false;
-            if(!addSHouse){
+            if(!addSHouse && e.getY() <580){
                 addSHouse = true;
             }
         }
-        if(bHB == true && sHB == false){
+        if(bHB == true){
             bHB = false;
-            if(!addBHouse){
+            if(!addBHouse && e.getY() <570){
                 addBHouse = true;
             }
         }
