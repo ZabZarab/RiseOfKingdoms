@@ -106,8 +106,6 @@ public class ProgramController {
         if(houseSmall.collidesWith(mouse.getxPos(), mouse.getyPos()) == true){
 
         }
-        carS.driveToOneHouse(100, 100 , 200, 200, dt);
-        //if( houseSmall.collidesWith(mouse) == true);
         if(carS.getX() != carS.getX2() ) carS.driveToOneHouse(carS.getX(), carS.getY(), 200, 400, dt);
         if(carS.getX() == carS.getX2()) carS.setGo(false);
         //System.out.println(carS.isGo());
