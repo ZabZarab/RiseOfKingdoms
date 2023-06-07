@@ -6,9 +6,6 @@ import KAGO_framework.model.abitur.datenstrukturen.Graph;
 import KAGO_framework.model.abitur.datenstrukturen.List;
 import KAGO_framework.model.abitur.datenstrukturen.Vertex;
 import my_project.model.*;
-import my_project.view.InputManager;
-
-import java.awt.event.MouseEvent;
 
 /**
  * Ein Objekt der Klasse ProgramController dient dazu das Programm zu steuern. Die updateProgram - Methode wird
@@ -26,7 +23,7 @@ public class ProgramController {
     public Mouse mouse;
     private HouseSmall houseSmall;
     private HouseBig houseBig;
-    private Money money;
+    private Player player;
 
     /**
      * Konstruktor
@@ -39,7 +36,7 @@ public class ProgramController {
         this.viewController = viewController;
         allBuildings = new Graph();
         mouse = new Mouse();
-        money = new Money();
+        player = new Player();
     }
 
     /**
@@ -50,8 +47,8 @@ public class ProgramController {
         // Erstelle ein Objekt der Klasse Ball und lasse es zeichnen
         addAll();
         //Geld
-        viewController.draw(money);
-        viewController.register(money);
+        viewController.draw(player);
+        viewController.register(player);
         //Maus
         viewController.register(mouse);
         //Haus klein
@@ -69,7 +66,7 @@ public class ProgramController {
     public void updateProgram(double dt){
 
         //Drag and drop vom kleinen haus
-        if(hotbar.getSHB() && money.getMoney() >= 1000){
+        if(hotbar.getSHB() && player.getMoney() >= 1000){
             houseSmall.setX(mouse.getxPos());
             houseSmall.setY(mouse.getyPos());
             System.out.println(mouse.getxPos());
@@ -77,15 +74,18 @@ public class ProgramController {
             houseSmall.setX(50);
             houseSmall.setY(630);
         }
-        if(hotbar.isAddSHouse() && hotbar.getSHB() == false && money.getMoney() >= 1000){
+        //Loslassen
+        System.out.println("(" + mouse.getxPos() + "|"+mouse.getyPos()+")" +
+                mouse.collidesWith(0,0));
+        if(hotbar.isAddSHouse() && hotbar.getSHB() == false && player.getMoney() >= 1000 && mouse.getyPos() <585 && mouse.collidesWith(houseSmall) == false){
             addSHouse(mouse.getxPos(), mouse.getyPos());
             hotbar.setAddSHouse(false);
             hotbar.setAmountOfSmallH(hotbar.getAmountOfSmallH()+1);
-            money.setMoney(money.getMoney()-houseSmall.getPrice());
+            player.setMoney(player.getMoney()-houseSmall.getPrice());
         }
 
         //Drag and drop vom großen haus
-        if(hotbar.getBHB() && money.getMoney() >= 2000){
+        if(hotbar.getBHB() && player.getMoney() >= 2000){
             houseBig.setX(mouse.getxPos());
             houseBig.setY(mouse.getyPos());
             System.out.println(mouse.getxPos());
@@ -93,11 +93,11 @@ public class ProgramController {
             houseBig.setX(175);
             houseBig.setY(630);
         }
-        if(hotbar.isAddBHouse() && hotbar.getBHB() == false && money.getMoney() >= 2000){
+        if(hotbar.isAddBHouse() && hotbar.getBHB() == false && player.getMoney() >= 2000 && mouse.getyPos() <580){
             addBHouse(mouse.getxPos(), mouse.getyPos());
             hotbar.setAddBHouse(false);
             hotbar.setAmountOfBigH(hotbar.getAmountOfBigH()+1);
-            money.setMoney(money.getMoney()-houseBig.getPrice());
+            player.setMoney(player.getMoney()-houseBig.getPrice());
         }
         hotbar.setAmountOfBuildings(hotbar.getAmountOfBigH()+hotbar.getAmountOfSmallH());
         //if( houseSmall.collidesWith(mouse) == true);
