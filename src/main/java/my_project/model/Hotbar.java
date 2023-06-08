@@ -20,10 +20,14 @@ public class Hotbar extends InteractiveGraphicalObject {
     private boolean bHB = false;
     private boolean addSHouse = false;
     private boolean addBHouse = false;
+    private boolean addHonda;
+    private boolean addTruck;
     private int amountOfBuildings;
     private int amountOfSmallH;
     private int amountOfBigH;
-
+    private int amountOfHonda;
+    private int amountOfTruck;
+    private int amountOfCar;
 
     public Hotbar(){
         this.x = 0;
@@ -54,6 +58,9 @@ public class Hotbar extends InteractiveGraphicalObject {
         drawTool.drawText(x+800, y+30, "Amount of Buildings: " + amountOfBuildings);
         drawTool.drawText(x+800, y+50, "Small Houses: " + amountOfSmallH);
         drawTool.drawText(x+800, y+70, "Big Houses: " + amountOfBigH);
+        drawTool.drawText(x+950, y+30, "The Number that the Cars: " + amountOfCar);
+        drawTool.drawText(x+950, y+50, "Honda Civics: " + amountOfHonda);
+        drawTool.drawText(x+950, y+70, "Truck-Kuns: " + amountOfTruck);
     }
 
 
@@ -69,6 +76,12 @@ public class Hotbar extends InteractiveGraphicalObject {
         }
         if (e.getX() >= 140 && e.getX() <= 265 && e.getY() >= 605 && e.getY() <= 685 && e.getButton() == MouseEvent.BUTTON1) {
             bHB = true;
+        }
+        if(e.getX() >= 295 && e.getX() <= 420 && e.getY() >= 605 && e.getY() <= 685 && e.getButton() == MouseEvent.BUTTON1){
+            addHonda = true;
+        }
+        if(e.getX() >= 140+150+125+10 && e.getX() <= 140+150+125+10+125 && e.getY() >= 605 && e.getY() <= 685 && e.getButton() == MouseEvent.BUTTON1){
+            addTruck = true;
         }
     }
 
@@ -134,5 +147,46 @@ public class Hotbar extends InteractiveGraphicalObject {
 
     public void setAmountOfBigH(int amountOfBigH) {
         this.amountOfBigH = amountOfBigH;
+    }
+
+    public int getAmountOfTruck() {
+        return amountOfTruck;
+    }
+
+    public void setAmountOfTruck(int amountOfTruck) {
+        this.amountOfTruck = amountOfTruck;
+    }
+
+    public int getAmountOfHonda() {
+        return amountOfHonda;
+    }
+
+    public void setAmountOfHonda(int amountOfHonda) {
+        this.amountOfHonda = amountOfHonda;
+    }
+
+    public int getAmountOfCar() {
+        return amountOfCar;
+    }
+
+    public void setAmountOfCar(int amountOfCar) {
+        this.amountOfCar = amountOfCar;
+    }
+
+
+    public boolean isAddTruck() {
+        return addTruck;
+    }
+
+    public void setAddTruck(boolean addTruck) {
+        this.addTruck = addTruck;
+    }
+
+    public boolean isAddHonda() {
+        return addHonda;
+    }
+
+    public void setAddHonda(boolean addHonda) {
+        this.addHonda = addHonda;
     }
 }

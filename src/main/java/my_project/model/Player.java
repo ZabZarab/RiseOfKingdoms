@@ -25,7 +25,7 @@ public class Player extends InteractiveGraphicalObject {
 
     public void draw(DrawTool drawTool){
         drawTool.setCurrentColor(Color.RED);
-        drawTool.drawText(1000, 630, "Cash$$$:" + money);
+        drawTool.drawText(650, 630, "Cash$$$:" + money);
     }
 
     public int getMoney() {

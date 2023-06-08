@@ -19,6 +19,8 @@ public class ProgramController {
     // Referenzen
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
     private Graph allBuildings; // Referenz auf ein Objekt der Klasse Graph - Verwaltet alle Gebäude als Knoten und Straßen als Kanten
+    private List<Vehicle> hondaList; // Referenz auf ein Object der Klasse List mit dem ContentType Vehicle - Verwaltet alle Hondas in einer Liszt
+    private List<Vehicle> truckList; // Referenz auf ein Object der Klasse List mit dem ContentType Vehicle - Verwaltet alle Truckos in einer Liszt
     private List<Buildings> buildingsList; // Referenz auf ein Objekt der Klasse List mit dem ContentType Buildings - Verwaltet alle Gebäude in einer Liste
 
     private Hotbar hotbar;
@@ -40,6 +42,8 @@ public class ProgramController {
     public ProgramController(ViewController viewController){
         this.viewController = viewController;
         allBuildings = new Graph();
+        hondaList = new List<>();
+        truckList = new List<>();
         buildingsList = new List<>();
         mouse = new Mouse();
         player = new Player();
@@ -109,10 +113,29 @@ public class ProgramController {
             hotbar.setAddBHouse(false);
         }
         hotbar.setAmountOfBuildings(hotbar.getAmountOfBigH()+hotbar.getAmountOfSmallH());
-        if(!carS.collidesWith(carS.getX2(),carS.getY())) carS.driveToOneHouse(carS.getX(), carS.getY(), 0, 400, dt);
-        if(!carB.collidesWith(carB.getX2(),carB.getY())) carB.driveToOneHouse(carB.getX(), carB.getY(), 0, 400, dt);
-        //System.out.println(carS.isGo());
-
+        //Car Adding simulator
+        if(hotbar.isAddHonda() && player.getMoney() >= 500){
+            //TODO-01 car add methode sobald wir es haben
+            hotbar.setAddHonda(false);
+            hotbar.setAmountOfCar(hotbar.getAmountOfCar()+1);
+            hotbar.setAmountOfHonda(hotbar.getAmountOfHonda()+1);
+            player.setMoney(player.getMoney()-500);
+            HondaCivic civic = new HondaCivic(-100,-100);
+            hondaList.append(civic);
+            viewController.draw(civic);
+        }
+        if(hotbar.isAddTruck() && player.getMoney() >= 2500){
+            //TODO-01 car add methode sobald wir es haben
+            hotbar.setAddTruck(false);
+            hotbar.setAmountOfCar(hotbar.getAmountOfCar()+1);
+            hotbar.setAmountOfTruck(hotbar.getAmountOfTruck()+1);
+            player.setMoney(player.getMoney()-2500);
+            Truck truck = new Truck(-100,-100);
+            truckList.append(truck);
+        }
+        //if(!carS.collidesWith(carS.getX2(),carS.getY())) carS.driveToOneHouse(carS.getX(), carS.getY(), 0, 400, dt);
+        //if(!carB.collidesWith(carB.getX2(),carB.getY())) carB.driveToOneHouse(carB.getX(), carB.getY(), 0, 400, dt);
+        driveHonda(600,500,dt);
     }
 
     public void addAll(){
@@ -126,9 +149,9 @@ public class ProgramController {
         viewController.draw(hotbar);
         viewController.register(hotbar);
 
-        carS = new HondaCivic(100, 100);
+        carS = new HondaCivic(340, 630);
         viewController.draw(carS);
-        carB = new Truck(200,100);
+        carB = new Truck(460,630);
         viewController.draw(carB);
 
 
@@ -165,6 +188,18 @@ public class ProgramController {
         buildingsList.append(MAIN);
         idCounter++;
     }
+    public void driveHonda(int endX, int endY,double dt){
+        hondaList.toFirst();
+        if(hondaList.hasAccess()&&!hondaList.getContent().isTaskCompleted()){
+            hondaList.getContent().setHasTask(true);
+            hondaList.getContent().setX(555);
+            hondaList.getContent().setY(385);
+            hondaList.getContent().driveToOneHouse(hondaList.getContent().getX(),hondaList.getContent().getY(),endX,endY,dt);
+        }else{
+            hondaList.next();
+        }
+
+    }
 
     public void drawSHouse(int x, int y){
         //Erstellt und zeichnet ein Haus als Objekt (Nur zum zeichnen --> Keine Veränderung im Graphen)
@@ -177,6 +212,9 @@ public class ProgramController {
         HouseBig hB =new HouseBig(x, y,null);
         viewController.draw(hB);
     }
+
+
+
 
     public boolean addStreet(Buildings b1, Buildings b2){
         Vertex v1 = allBuildings.getVertex(b1.getId());

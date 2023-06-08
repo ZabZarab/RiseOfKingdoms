@@ -16,6 +16,9 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
     protected double mX;
     protected double mY;
     protected boolean right;
+    protected boolean hasTask;
+    protected boolean taskCompleted;
+
 
     protected Vehicle(double x, double y){
         this.x = x;
@@ -33,6 +36,7 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
 
     public void driveToOneHouse(double x1, double y1, double x2, double y2, double dt){
         //this.yes = true;
+
         if(!collidesWith(x2,y2)){
             this.mX = 15;
             this.mY = 15 * ((y2-y1)/(x2-x1));
@@ -56,8 +60,8 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
                 this.y = y-dt*mY;
                 right = false;
             }
+        }else {hasTask = false; taskCompleted = true; }
 
-        }
         //System.out.println("X: " + (int) x + " Y: " +(int) y);
         //System.out.println(mY);
     }
@@ -103,4 +107,16 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
     }
 
     public boolean getRight(){return right;}
+
+    public boolean doesHasTask(){return hasTask;}
+
+    public void setHasTask(boolean hasTask){
+        this.hasTask = hasTask;
+    }
+
+    public boolean isTaskCompleted(){return taskCompleted;}
+
+    public void setTaskCompleted(boolean taskCompleted){
+        this.taskCompleted = taskCompleted;
+    }
 }
