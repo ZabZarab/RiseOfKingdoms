@@ -98,7 +98,7 @@ public class ProgramController {
         tempTBP = testBuildPath();
 
 
-        System.out.println(dijkstra(allBuildings.getVertex("b0"), allBuildings.getVertex("b2")));
+       // System.out.println(dijkstra(allBuildings.getVertex("b0"), allBuildings.getVertex("b2")));
     }
 
     /**
@@ -146,6 +146,7 @@ public class ProgramController {
         //Drag and drop zeichnen und erstellen von Straßen
         if(dragStreetBuildingCheck()!=null) {
             if(addStreetBuildingCheck()!=null && allBuildings.getEdge(allBuildings.getVertex(addStreetBuildingCheck().getId()), allBuildings.getVertex(dragStreetBuildingCheck().getId()))==null && !addStreetBuildingCheck().equals(dragStreetBuildingCheck())){
+                System.out.println("oh no");
                 addStreet(dragStreetBuildingCheck(), addStreetBuildingCheck());
                 dragStreetBuildingCheck().setDragStreet(false);
                 addStreetBuildingCheck().setAddStreet(false);
@@ -349,6 +350,8 @@ public class ProgramController {
         }
         return null;
     }
+
+
     public void drive(Vehicle car, double dt){
 
         if(!car.getPathList().isEmpty() && car.getPathList().hasAccess()){
@@ -372,11 +375,13 @@ public class ProgramController {
                 car.getPathList().next();
             }
 
-
-
         }
     }
 
+    /** wandelt die Liste vo Dijkstra so um damit wir damit arbeiten können
+     * @param pList die Liste die vom Dijkstra zurückgegeben werden sollte
+     * @return output ist die liste die in Buildings umwandelt
+     */
     public List<Buildings> buildingPathList(List<Vertex> pList){
 
         if(!pList.isEmpty()){
@@ -406,9 +411,9 @@ public class ProgramController {
 
         List<Vertex> vertices = allBuildings.getVertices(); // Liste von allen buildings
         vertices.toFirst(); // wollen auf das erste
-        allBuildings.setAllVertexMarks(false);
+        //allBuildings.setAllVertexMarks(false);
         while(vertices.hasAccess()) {  // läuft die Liste durch von allen Knoten uns setzt sie alle auf nicht markiert und mit dem Score(distance) "unendlich"
-            //vertices.getContent().setMark(false);
+            vertices.getContent().setMark(false);
             vertices.getContent().setScore(Double.POSITIVE_INFINITY);
             vertices.getContent().setPrevious(null);
             vertices.next();
@@ -452,36 +457,45 @@ public class ProgramController {
                         //finalPath.append(neighbours.getContent());
                         neighbours.getContent().setPrevious(current);
                     }
+                    neighbours.getContent().setMark(true);
                 }
                 neighbours.next();
                 System.out.println("hie");
             }
 
-            /*if(current == end) return finalPath;
-            if(nodeWithLowestScore().getScore() == Integer.MAX_VALUE) return null;*/
-
         }
     }
 
+    /**
+     *Die Methode nodeWithLowestScore() wird verwendet, um in jeder Iteration des Hauptalgorithmus
+     * den Knoten mit dem niedrigsten score auszuwählen.
+     * Dieser Knoten wird dann als der aktuelle Knoten (current) betrachtet,
+     * und seine Nachbarknoten werden überprüft und gegebenenfalls aktualisiert.
+     * Indem der Knoten mit dem niedrigsten score ausgewählt wird,
+     * wird der Algorithmus schrittweise den kürzesten Pfad zum Endknoten bestimmen.
+     */
     private Vertex nodeWithLowestScore() {
         List<Vertex> vertices = allBuildings.getVertices();// Liste mit allen buildings die im Graphen sind
-        vertices.toFirst();
-        Vertex result = vertices.getContent();// current wird als erstes vorlaüfiges Ergebnis festgelegt
+        if(!vertices.isEmpty()){
+            vertices.toFirst();
+            Vertex result = vertices.getContent();// current wird als erstes vorläufiges Ergebnis festgelegt
 
-        while(vertices.hasAccess()) {
-            if(!vertices.getContent().isMarked() &&
-                    vertices.getContent().getScore() <= result.getScore()) {
-                result = vertices.getContent();
+            while(vertices.hasAccess()) {
+                if(!vertices.getContent().isMarked() &&
+                        vertices.getContent().getScore() <= result.getScore()) {
+                    result = vertices.getContent();
+                }
+                vertices.next();
             }
-            vertices.next();
-        }
-        //Während der Durchlaufschleife wird für jeden Knoten überprüft,
-        // ob er nicht markiert ist und ob
-        // sein score kleiner oder gleich dem score des bisherigen Ergebnisknotens (result) ist.
+            //Während der Durchlaufschleife wird für jeden Knoten überprüft,
+            // ob er nicht markiert ist und ob
+            // sein score kleiner oder gleich dem score des bisherigen Ergebnisknotens (result) ist.
 
-        return result; // Nachdem alle Knoten überprüft wurden,
-        // wird das vorläufige Ergebnis (result) zurückgegeben.
-        // Dieser Knoten hat den niedrigsten score unter den nicht markierten Knoten.
+            return result; // Nachdem alle Knoten überprüft wurden,
+            // wird das vorläufige Ergebnis (result) zurückgegeben.
+            // Dieser Knoten hat den niedrigsten score unter den nicht markierten Knoten.
+        }
+        return  null;
     }
 
     public List<Buildings> testBuildPath() {
@@ -495,4 +509,166 @@ public class ProgramController {
         output.toFirst();
         return output;
     }
+
+
+
+    /////////////////////////////////////// PAUL DIJKSTRA
+    /*/**
+     * rechnet durch den Dijkstra-Algorithmus die kürzeste Route zwischen zwei Punkten im Graphen aus
+     * @param location Anfangspunkt des Autos
+     * @return gibt eine Liste von Strings zurück, die dann die einzelnen Vertecies sind, durch
+     * die das Auto fahren muss um das Ziel zu erreichen
+     */
+    /*public List<String[]> calculateBestRoutesWithDijkstra(String location) {
+        Graph graph = restauraant.getHouseGraph(); //zur Lesbarkeit
+        List<Vertex> verteces = graph.getVertices();
+        List<Vertex> queue = new List<>(); //Warteschlange der Objekte, die noch durchgenommen werden sollen
+        queue.append(graph.getVertex(location));
+
+        List<String[]> distances = new List<>(); //Liste distances mit Distanzen von location zu allen anderen Knoten und mit Vorgängern
+        verteces.toFirst();
+        //Alle Distanzen werden auf unendlich gesetzt außer die von dem Standort, die ist 0, Vorgänger ist leerer String
+        while (verteces.hasAccess()) {
+            if(verteces.getContent().getID().equals(location)) distances.append(new String[]{location, "0", location});
+            else distances.append(new String[]{verteces.getContent().getID(), String.valueOf(Integer.MAX_VALUE), ""});
+            verteces.next();
+        }
+
+        List<Vertex> neighbours = graph.getNeighbours(graph.getVertex(location));
+        neighbours.toFirst();
+        while(neighbours.hasAccess()) {
+            //jeder Nachbar wird in die Queue hinzugefügt (natürlich nach richtiger Reihenfolge)
+            insertInQueue(queue, neighbours.getContent(), distances, location, graph);
+
+            //Distanzen und Vorgänger der Nachbarn des Standorts werden hinzugefügt
+            distances.toFirst();
+            while (distances.hasAccess() && !Objects.equals(neighbours.getContent().getID(), distances.getContent()[0])) {
+                distances.next();
+            }
+            distances.getContent()[1] = String.valueOf(getTimeToPass(location, distances.getContent()[0]));
+            distances.getContent()[2] = location;
+
+            neighbours.next();
+        }
+
+        graph.getVertex(location).setMark(true); //besucht
+        queue.toFirst();
+        queue.remove();
+
+        //bis macht der algo alles richtig
+        //dies ist der Startpunkt, nun beginnt der eigentliche Algorithmus, that's were the magic happens
+
+        while(!queue.isEmpty()) {
+            queue.toFirst();
+            double currentDistance = findDoubleInDistancesList(distances, queue.getContent()); //Distanz vom Startpunkt bis zu dem current Objekt der queue
+
+            neighbours = graph.getNeighbours(graph.getVertex(queue.getContent().getID())); //Nachbarn des aktuellen Objekts der Queue
+            neighbours.toFirst();
+            while (!neighbours.isEmpty()) {
+                //alle Nachbarn, die nicht markiert sind werden in die Queue gepackt und dabei richtig sortiert (Queue hat immer richtige Reihenfolge)
+                insertInQueue(queue, neighbours.getContent(), distances, queue.getContent().getID(), graph);
+                //prüfen, ob die distances Liste aktuell ist -> ggf. updaten
+                distances.toFirst(); //greifen auf die distances Liste zu
+                queue.toFirst();
+                //suchen von den selben Neighbour Objekt
+                if(!graph.getVertex(neighbours.getContent().getID()).isMarked()) {
+                    while (distances.hasAccess() && !Objects.equals(neighbours.getContent().getID(), distances.getContent()[0])) {
+                        distances.next();
+                    }
+                    if (currentDistance + getTimeToPass(queue.getContent().getID(), neighbours.getContent().getID())
+                            < Double.parseDouble(distances.getContent()[1])) { //wenn der Weg kleiner ist
+                        distances.getContent()[1] = String.valueOf(
+                                currentDistance + getTimeToPass(queue.getContent().getID(), neighbours.getContent().getID())
+                        );
+                        distances.getContent()[2] = queue.getContent().getID();
+                        //wenn der Weg größer ist passiert nichts
+                    }
+                }
+                neighbours.remove();
+            }
+
+            queue.getContent().setMark(true);
+            queue.remove();
+        }
+
+        graph.setAllVertexMarks(false);
+        return distances;
+    }
+
+    /**
+     * fügt in die queue einen neuen Nachbarn hinzu, dabei wird darauf geachtet, dass die Liste nach den Distanzen
+     * aufsteigend sortiert ist
+     * @param queue die Liste mit allen Knoten, die noch abarbeitet werden müssen
+     * @param toInsert Vertex, was in die queue hinzugefügt werden sollen
+     * @param distances distances Liste
+     *
+     * @param currentVertex toInsert ist der Nachbar von currentVertex
+     */
+    /*private boolean insertInQueue(List<Vertex> queue, Vertex toInsert, List<String[]> distances, String currentVertex, Graph graph) {
+        if(graph.getVertex(toInsert.getID()).isMarked()) return false;
+
+        queue.toFirst();
+        while (queue.hasAccess()) {
+            if (queue.getContent().equals(toInsert)) return false;
+            queue.next();
+        }
+
+        distances.toFirst();
+        while (distances.hasAccess() && distances.getContent()[0].equals(currentVertex)) {
+            distances.next();
+        }
+        double currentDistance = Double.parseDouble(distances.getContent()[1]);
+
+        queue.toFirst();
+        queue.next();
+        if(!queue.hasAccess()) {
+            queue.append(toInsert);
+        } else {
+            while(queue.hasAccess() &&
+                    currentDistance + getTimeToPass(currentVertex, toInsert.getID()) >
+                            findDoubleInDistancesList(distances, queue.getContent()))
+            {
+                queue.next();
+            }
+            if(!queue.hasAccess()) {
+                queue.append(toInsert);
+            } else {
+                queue.insert(toInsert);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * für Dijkstra: findet die Distanz zu dem Knoten durch das Suchen in der distances Liste
+     * @param distances
+     * @param toFind
+     * @return Distanz als double
+     */
+    /*public double findDoubleInDistancesList(List<String[]> distances, Vertex toFind){
+        distances.toFirst();
+        while (distances.hasAccess() && !Objects.equals(distances.getContent()[0], toFind.getID())) {
+            distances.next();
+        }
+        return Double.parseDouble(distances.getContent()[1]);
+    }
+
+    /**
+     * findet heraus wie lange das Auto braucht, um von dem einen Vertex zum anderen zu kommen
+     * dabei wird angenommen, dass eine Längeneinheit eine Minute braucht, um diese zu überqueren
+     * (Idee: Dauer ist vom Auto abhängig, einige Autos sind langsamer, einige schneller)
+     * @param location Anfangspunkt des Autos
+     * @param destination Ziel
+     * @return Dauer
+     */
+    /*private double getTimeToPass(String location, String destination) {
+        double[] locCoordinates = restaurant.getHouseGraph().getVertex(location).getCoordinates();
+        double[] desCoordinates = restaurant.getHouseGraph().getVertex(destination).getCoordinates();
+        double length = Math.sqrt(
+                Math.pow(Math.abs(locCoordinates[0] - desCoordinates[0]), 2) +
+                        Math.pow(Math.abs(locCoordinates[1] - desCoordinates[1]), 2)
+        );
+        return length;
+    } */
+
 }
