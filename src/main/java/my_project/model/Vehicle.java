@@ -3,16 +3,17 @@ package my_project.model;
 import KAGO_framework.model.GraphicalObject;
 import KAGO_framework.model.InteractiveGraphicalObject;
 import KAGO_framework.view.DrawTool;
+import KAGO_framework.model.abitur.datenstrukturen.List;
 
 import java.awt.*;
 
 public abstract class Vehicle extends InteractiveGraphicalObject {
 
     protected double time;
-    protected double x1;
+    /*protected double x1;
     protected double y1;
     protected double x2;
-    protected double y2;
+    protected double y2;*/
     protected double mX;
     protected double mY;
     protected boolean right;
@@ -20,13 +21,16 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
     protected boolean taskCompleted;
     protected double markiplier;
     protected boolean arrived;
+    protected List<Buildings> pathList;
 
 
-    protected Vehicle(double x, double y){
+    protected Vehicle(double x, double y, List<Buildings> pathList){
         this.x = x;
         this.y = y;
         this.time = 0;
         this.arrived = false;
+        this.mX = 15;
+        this.pathList = pathList;
     }
     @Override
     public void draw(DrawTool drawTool){
@@ -39,8 +43,7 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
 
     public void driveToOneHouse(double x1, double y1, double x2, double y2, double dt){
         //this.yes = true;
-        if(!collidesWith(x2,y2) && arrived == false){
-            this.mX = 15;
+        if(!this.collidesWith(x2,y2) && arrived == false){;
             this.mY = mX * ((y2-y1)/(x2-x1));
             if(x2 <= x1 && y2 <= y1){ //oben links
                 this.x = x-dt*mX;
@@ -79,7 +82,7 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
         this.time = time;
     }
 
-    public double getX1() {
+    /*public double getX1() {
         return x1;
     }
 
@@ -109,7 +112,7 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
 
     public void setY2(double y2) {
         this.y2 = y2;
-    }
+    }*/
 
     public boolean getRight(){return right;}
 
@@ -132,6 +135,10 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
 
     public void setArrived(boolean arrived) {
         this.arrived = arrived;
+    }
+
+    public List<Buildings> getPathList() {
+        return pathList;
     }
 }
 

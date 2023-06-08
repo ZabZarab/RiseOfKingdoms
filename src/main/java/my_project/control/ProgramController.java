@@ -34,6 +34,11 @@ public class ProgramController {
     private Street drawStreet;
     private Vertex vertex;
 
+
+    //test
+    HondaCivic testCar;
+    List<Buildings> tempTBP;
+
     /**
      * Konstruktor
      * Dieser legt das Objekt der Klasse ProgramController an, das den Programmfluss steuert.
@@ -75,6 +80,25 @@ public class ProgramController {
 
         drawStreet = new Street(0,0,0,0);
         viewController.draw(drawStreet);
+
+        //test
+        addSHouse(400,300);
+        addSHouse(700,300);
+        buildingsList.toFirst();
+        Buildings temp = buildingsList.getContent();
+        buildingsList.next();
+        addStreet(temp, buildingsList.getContent());
+        temp = buildingsList.getContent();
+        buildingsList.next();
+        addStreet(temp, buildingsList.getContent());
+
+        testCar = new HondaCivic(500, 300, testBuildPath());
+        viewController.draw(testCar);
+
+        tempTBP = testBuildPath();
+
+
+        System.out.println(dijkstra(allBuildings.getVertex("b0"), allBuildings.getVertex("b2")));
     }
 
     /**
@@ -122,7 +146,6 @@ public class ProgramController {
         //Drag and drop zeichnen und erstellen von Straßen
         if(dragStreetBuildingCheck()!=null) {
             if(addStreetBuildingCheck()!=null && allBuildings.getEdge(allBuildings.getVertex(addStreetBuildingCheck().getId()), allBuildings.getVertex(dragStreetBuildingCheck().getId()))==null && !addStreetBuildingCheck().equals(dragStreetBuildingCheck())){
-                System.out.println("oh no");
                 addStreet(dragStreetBuildingCheck(), addStreetBuildingCheck());
                 dragStreetBuildingCheck().setDragStreet(false);
                 addStreetBuildingCheck().setAddStreet(false);
@@ -146,7 +169,7 @@ public class ProgramController {
             hotbar.setAmountOfCar(hotbar.getAmountOfCar()+1);
             hotbar.setAmountOfHonda(hotbar.getAmountOfHonda()+1);
             player.setMoney(player.getMoney()-500);
-            HondaCivic civic = new HondaCivic(-100,-100);
+            HondaCivic civic = new HondaCivic(-100,-100, null);
             hondaList.append(civic);
             viewController.draw(civic);
         }
@@ -156,7 +179,7 @@ public class ProgramController {
             hotbar.setAmountOfCar(hotbar.getAmountOfCar()+1);
             hotbar.setAmountOfTruck(hotbar.getAmountOfTruck()+1);
             player.setMoney(player.getMoney()-2500);
-            Truck truck = new Truck(-100,-100);
+            Truck truck = new Truck(-100,-100, null);
             truckList.append(truck);
         }
         //if(!carS.collidesWith(carS.getX2(),carS.getY())) carS.driveToOneHouse(carS.getX(), carS.getY(), 0, 400, dt);
@@ -165,6 +188,17 @@ public class ProgramController {
             HondaCivic honda = selectHonda();
             honda.driveToOneHouse(500,500,1000,600,dt);
         }
+
+        // test
+
+        drive(testCar, dt);
+
+        /*List<Vertex> tempList = allBuildings.getVertices();
+        allBuildings.getVertices().toFirst();
+        Vertex temp = allBuildings.getVertices().getContent();
+        allBuildings.getVertices().next();*/
+
+
 
 
     }
@@ -180,9 +214,9 @@ public class ProgramController {
         viewController.draw(hotbar);
         viewController.register(hotbar);
 
-        carS = new HondaCivic(340, 630);
+        carS = new HondaCivic(340, 630, null);
         viewController.draw(carS);
-        carB = new Truck(460,630);
+        carB = new Truck(460,630, null);
         viewController.draw(carB);
 
 
@@ -315,23 +349,31 @@ public class ProgramController {
         }
         return null;
     }
-    public void drive(List<Buildings> list, Vehicle car, double dt){
-        if(!list.isEmpty()){
-            list.toFirst();
-            Buildings from = list.getContent();
-            list.next();
-            Buildings to = list.getContent();
+    public void drive(Vehicle car, double dt){
+
+        if(!car.getPathList().isEmpty() && car.getPathList().hasAccess()){
+            car.getPathList().toFirst();
+            Buildings from = car.getPathList().getContent();
+            car.getPathList().next();
+            Buildings to = car.getPathList().getContent();
             double x1 = from.getX();
-            double y1 = from.getX();
+            double y1 = from.getY();
             double x2 = to.getX();
             double y2 = to.getY();
 
-            if(!car.isArrived()) car.driveToOneHouse(x1,y1,x2,y2,dt);
+            //System.out.println(from);
+            //System.out.println(to);
 
-            list.toFirst();
-            list.remove();
+            if(!car.collidesWith(to)){
+                car.driveToOneHouse(x1,y1,x2,y2,dt);
+            }else{
+                car.getPathList().toFirst();
+                car.getPathList().remove();
+                car.getPathList().next();
+            }
 
-            drive(list, car, dt);
+
+
         }
     }
 
@@ -367,9 +409,9 @@ public class ProgramController {
         allBuildings.setAllVertexMarks(false);
         while(vertices.hasAccess()) {  // läuft die Liste durch von allen Knoten uns setzt sie alle auf nicht markiert und mit dem Score(distance) "unendlich"
             //vertices.getContent().setMark(false);
-            vertices.getContent().setScore(Integer.MAX_VALUE);
-            vertices.next();
+            vertices.getContent().setScore(Double.POSITIVE_INFINITY);
             vertices.getContent().setPrevious(null);
+            vertices.next();
         }
         start.setScore(0); // Setzt den Start knoten den Score 0, da die distance ja 0 ist
 
@@ -381,7 +423,7 @@ public class ProgramController {
             // (über die Methode nodeWithLowestScore()) ausgewählt und als current markiert.
             // Hier ist es der Start knoten weil er den niedrigsten score hat
 
-            if (current == null || current.getScore() == Integer.MAX_VALUE) {
+            if (current == null || current.getScore() == Double.POSITIVE_INFINITY) {
                 return null; // Kein Pfad zum Endknoten gefunden
             }
 
@@ -403,19 +445,21 @@ public class ProgramController {
                 // ob die aktuelle Entfernung (score) plus die Kosten der Kante
                 // zu diesem Nachbarn kleiner ist als der bisherige score des Nachbarn.
                 if(!neighbours.getContent().isMarked()) {
-                    double newScore = neighbours.getContent().getScore()+ allBuildings.getEdge(current,neighbours.getContent()).getWeight();
+                    double newScore = current.getScore()+ allBuildings.getEdge(current,neighbours.getContent()).getWeight();
                     if(newScore < neighbours.getContent().getScore()) {
                         //Wenn ja, wird der score des Nachbarn aktualisiert und der Nachbarknoten wird zum finalPath hinzugefügt.
                         neighbours.getContent().setScore(newScore);
                         //finalPath.append(neighbours.getContent());
-                        neighbours.setPrevious(current);
+                        neighbours.getContent().setPrevious(current);
                     }
                 }
                 neighbours.next();
+                System.out.println("hie");
             }
 
             /*if(current == end) return finalPath;
             if(nodeWithLowestScore().getScore() == Integer.MAX_VALUE) return null;*/
+
         }
     }
 
@@ -438,5 +482,17 @@ public class ProgramController {
         return result; // Nachdem alle Knoten überprüft wurden,
         // wird das vorläufige Ergebnis (result) zurückgegeben.
         // Dieser Knoten hat den niedrigsten score unter den nicht markierten Knoten.
+    }
+
+    public List<Buildings> testBuildPath() {
+        List<Buildings> output = new List<>();
+        buildingsList.toFirst();
+        output.append(buildingsList.getContent());
+        buildingsList.next();
+        output.append(buildingsList.getContent());
+        buildingsList.next();
+        output.append(buildingsList.getContent());
+        output.toFirst();
+        return output;
     }
 }
