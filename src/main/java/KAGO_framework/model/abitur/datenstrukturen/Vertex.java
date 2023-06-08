@@ -20,6 +20,7 @@ public class Vertex{
   //Einmalige ID des Knotens und Markierung
   private String id;
   private boolean mark;
+  private int score;
   
   /**
   * Ein neues Objekt vom Typ Vertex wird erstellt. Seine Markierung hat den Wert false.
@@ -49,5 +50,12 @@ public class Vertex{
   public boolean isMarked(){
     return mark;
   }
-  
+
+  public void setScore(int score) {
+    this.score = score;
+  }
+
+  public int getScore() {
+    return score;
+  }
 }

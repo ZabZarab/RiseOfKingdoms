@@ -19,12 +19,14 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
     protected boolean hasTask;
     protected boolean taskCompleted;
     protected double markiplier;
+    protected boolean arrived;
 
 
     protected Vehicle(double x, double y){
         this.x = x;
         this.y = y;
         this.time = 0;
+        this.arrived = false;
     }
     @Override
     public void draw(DrawTool drawTool){
@@ -37,10 +39,9 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
 
     public void driveToOneHouse(double x1, double y1, double x2, double y2, double dt){
         //this.yes = true;
-
-        if(!collidesWith(x2,y2)){
+        if(!collidesWith(x2,y2) && arrived == false){
             this.mX = 15;
-            this.mY = 15 * ((y2-y1)/(x2-x1));
+            this.mY = mX * ((y2-y1)/(x2-x1));
             if(x2 <= x1 && y2 <= y1){ //oben links
                 this.x = x-dt*mX;
                 this.y = y-dt*mY;
@@ -61,8 +62,11 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
                 this.y = y-dt*mY;
                 right = false;
             }
-        }else {hasTask = false; taskCompleted = true; }
-
+        }else {
+            hasTask = false; 
+            taskCompleted = true;
+            arrived = true;
+        }
         //System.out.println("X: " + (int) x + " Y: " +(int) y);
         //System.out.println(mY);
     }
@@ -120,6 +124,14 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
     public double getMarkiplier(){return markiplier;}
     public void setTaskCompleted(boolean taskCompleted){
         this.taskCompleted = taskCompleted;
+    }
+
+    public boolean isArrived() {
+        return arrived;
+    }
+
+    public void setArrived(boolean arrived) {
+        this.arrived = arrived;
     }
 }
 

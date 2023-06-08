@@ -314,4 +314,97 @@ public class ProgramController {
         }
         return null;
     }
+    public void drive(List<Buildings> list, Vehicle car, double dt){
+        if(!list.isEmpty()){
+            list.toFirst();
+            Buildings from = list.getContent();
+            list.next();
+            Buildings to = list.getContent();
+            double x1 = from.getX();
+            double y1 = from.getX();
+            double x2 = to.getX();
+            double y2 = to.getY();
+
+            if(!car.isArrived()) car.driveToOneHouse(x1,y1,x2,y2,dt);
+
+            list.toFirst();
+            list.remove();
+
+            drive(list, car, dt);
+        }
+    }
+
+    public List<Buildings> buildingPathList(List<Vertex> pList){
+
+        if(!pList.isEmpty()){
+            List<Buildings> output = new List<>();
+            pList.toFirst();
+            while(pList.hasAccess()){
+                buildingsList.toFirst();
+                while(buildingsList.hasAccess()){
+                    if(buildingsList.getContent().getId().equals(pList.getContent().getID())) System.out.println(buildingsList.getContent().getId()); output.append(buildingsList.getContent());
+                    buildingsList.next();
+                }
+                pList.next();
+            }
+            output.toFirst();
+            return output;
+        }
+
+
+        return null;
+    }
+
+
+    //Dijakstra
+
+    public List<Vertex> dijkstra(Vertex start, Vertex end){
+        List<Vertex> finalPath = new List<>();
+
+        List<Vertex> vertices = allBuildings.getVertices();
+        vertices.toFirst();
+        while(vertices.hasAccess()) {
+            vertices.getContent().setMark(false);
+            vertices.getContent().setScore(Integer.MAX_VALUE);
+            vertices.next();
+        }
+        start.setScore(0);
+
+        while(true) {
+            Vertex current = nodeWithLowestScore();
+            current.setMark(true);
+
+            List<Vertex> neighbours = allBuildings.getNeighbours(current);
+            neighbours.toFirst();
+            while(neighbours.hasAccess()) {
+                if(!neighbours.getContent().isMarked()) {
+                    int newScore = neighbours.getContent().getScore()+1;
+                    if(newScore < neighbours.getContent().getScore()) {
+                        neighbours.getContent().setScore(newScore);
+                        finalPath.append(neighbours.getContent());
+                    }
+                }
+                neighbours.next();
+            }
+
+            if(current == end) return finalPath;
+            if(nodeWithLowestScore().getScore() == Integer.MAX_VALUE) return null;
+        }
+    }
+
+    private Vertex nodeWithLowestScore() {
+        List<Vertex> vertices = allBuildings.getVertices();// Liste mit allen buildings die im Graphen sind
+        vertices.toFirst();
+        Vertex result = vertices.getContent();// current als erstes als vorlaüfiges Ergebnis
+
+        while(vertices.hasAccess()) {
+            if(!vertices.getContent().isMarked() &&
+                    vertices.getContent().getScore() <= result.getScore()) {
+                result = vertices.getContent();
+            }
+            vertices.next();
+        }
+
+        return result;
+    }
 }
