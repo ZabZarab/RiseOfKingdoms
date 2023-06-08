@@ -1,15 +1,17 @@
 package my_project.model;
 
 import KAGO_framework.model.GraphicalObject;
+import KAGO_framework.model.InteractiveGraphicalObject;
 import KAGO_framework.view.DrawTool;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 /**
  * Repräsentiert eine Kugel (einen Kreis), der in eine Schlange eingefügt werden soll. Dabei muss jeder QueueBall immer
  * seinen Vorgänger kennen, damit er zu ihm Abstand halten kann.
  */
-public abstract class Buildings extends GraphicalObject {
+public abstract class Buildings extends InteractiveGraphicalObject {
 
     /**
      * Erzeugt einen neuen QueueBall
@@ -18,14 +20,19 @@ public abstract class Buildings extends GraphicalObject {
      */
     String id;
     protected int price;
-    protected boolean unplacapleCircle = false; //if true, draws red radius blabla
+    protected int borderRadius;
+    protected boolean dragStreet;
+    protected boolean addStreet;
+    protected boolean drawStreet;
 
     public Buildings(int x, int y, String id){
         this.x = x;
         this.y = y;
         this.id = id;
         this.price = price;
-        radius = 60;
+        this.dragStreet = false;
+        this.addStreet = false;
+        borderRadius = 60;
     }
 
 
@@ -36,7 +43,7 @@ public abstract class Buildings extends GraphicalObject {
     public void draw(DrawTool drawTool) {
         if(id!=null){
             drawTool.setCurrentColor(100, 100, 100, 50);
-            drawTool.drawFilledCircle(x+width/2, y+height/2, radius);
+            drawTool.drawFilledCircle(x+width/2, y+height/2, borderRadius);
         }
 
 
@@ -60,11 +67,41 @@ public abstract class Buildings extends GraphicalObject {
         return price;
     }
 
-    public void setUnplacapleCircle(boolean unplacapleCircle) {
-        this.unplacapleCircle = unplacapleCircle;
+    @Override
+    public void mousePressed(MouseEvent e) {
+        dragStreet = false;
+        addStreet = false;
+        if(this.collidesWith(e.getX(), e.getY())){
+            dragStreet = true;
+            drawStreet = true;
+        }
     }
 
-    public boolean isUnplacapleCircle() {
-        return unplacapleCircle;
+    public void mouseReleased(MouseEvent e) {
+        drawStreet = false;
+        if(this.collidesWith(e.getX(), e.getY())){
+            addStreet = true;
+        }
+
+    }
+
+    public boolean isDragStreet() {
+        return dragStreet;
+    }
+
+    public boolean isAddStreet() {
+        return addStreet;
+    }
+
+    public void setDragStreet(boolean dragStreet) {
+        this.dragStreet = dragStreet;
+    }
+
+    public void setAddStreet(boolean addStreet) {
+        this.addStreet = addStreet;
+    }
+
+    public boolean isDrawStreet() {
+        return drawStreet;
     }
 }
