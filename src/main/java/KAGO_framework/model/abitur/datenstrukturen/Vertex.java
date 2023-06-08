@@ -1,4 +1,4 @@
-
+package KAGO_framework.model.abitur.datenstrukturen;
 
 /**
  * <p>
@@ -20,7 +20,7 @@ public class Vertex{
   //Einmalige ID des Knotens und Markierung
   private String id;
   private boolean mark;
-  private int score;
+  private double score;
   private Vertex previous = null;
   
   /**
@@ -57,13 +57,13 @@ public class Vertex{
   /**
    * Liefert den score-Wert (für Dijkstra)
    */
-  public int getScore() {
+  public double getScore() {
 	  return score;
   }
   /**
    * Setzt den Score-Wert
    */
-  public void setScore(int newScore) {
+  public void setScore(double newScore) {
 	  score = newScore;
   }
   

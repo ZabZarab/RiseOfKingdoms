@@ -345,7 +345,7 @@ public class Graph{
 	        while (neighbors.hasAccess()) {
 	            Vertex neighbor = neighbors.getContent();
 	            System.out.println("Neighbor: " + neighbor.getID());
-	            int newScore = current.getScore() +1;
+	            double newScore = current.getScore() +1;
 	            
 	            if (newScore < neighbor.getScore()) {
 	                neighbor.setScore(newScore);

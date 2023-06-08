@@ -208,7 +208,9 @@ public class ProgramController {
         //Alle am Anfang benötigte Objekte werden hinzugefügt und gezeichnet
         drawUI();
     }
-
+    /**
+     * Drawed die Nutzeroberfläche
+     */
     public void drawUI(){
         // Zeichnet alle Elemente der Nutzeroberfläche
         hotbar = new Hotbar();
@@ -226,7 +228,9 @@ public class ProgramController {
         drawBHouse(175, 630);
 
     }
-
+    /**
+     * added ein haus in den Graphen und zeichnet
+     */
     public void addSHouse(int x, int y){
         //Erstellt und zeichnet ein Haus als Objekt und einen Knoten mit einer ID
         String id = "b" + idCounter; // Erstellt eine ID
@@ -237,6 +241,9 @@ public class ProgramController {
         viewController.register(hS);
         idCounter++;
     }
+    /**
+     * added ein haus in den Graphen und zeichnet
+     */
     public void addBHouse(int x, int y){
         //Erstellt und zeichnet ein Haus als Objekt und einen Knoten mit einer ID
         String id = "b" + idCounter; // Erstellt eine ID
@@ -247,6 +254,9 @@ public class ProgramController {
         viewController.register(hB);
         idCounter++;
     }
+    /**
+     * added ein haus in den Graphen und zeichnet
+     */
     public void addMAINHouse(int x, int y){
         //Erstellt und zeichnet ein Haus als Objekt und einen Knoten mit einer ID
         String id = "b" + idCounter; // Erstellt eine ID
@@ -257,6 +267,9 @@ public class ProgramController {
         viewController.register(MAIN);
         idCounter++;
     }
+    /**
+     * das auto wird ausgewählt
+     */
     public HondaCivic selectHonda(){
         if(!hondaList.isEmpty()) {
             hondaList.toFirst();
@@ -270,7 +283,9 @@ public class ProgramController {
         }
         return null;
     }
-
+    /**
+     * das auto wird ausgewählt
+     */
     public Truck selectTruck(){
         truckList.toFirst();
         if(truckList.hasAccess()&&!truckList.getContent().doesHasTask()){
@@ -282,19 +297,25 @@ public class ProgramController {
         }
         return null;
     }
-
+    /**
+     * zeichnet einfach haus small
+     */
     public void drawSHouse(int x, int y){
         //Erstellt und zeichnet ein Haus als Objekt (Nur zum zeichnen --> Keine Veränderung im Graphen)
         HouseSmall hS =new HouseSmall(x, y,null);
         viewController.draw(hS);
     }
-
+    /**
+     * zeichnet einfach haus big
+     */
     public void drawBHouse(int x, int y){
         //Erstellt und zeichnet ein Haus als Objekt (Nur zum zeichnen --> Keine Veränderung im Graphen)
         HouseBig hB =new HouseBig(x, y,null);
         viewController.draw(hB);
     }
-
+    /**
+     * added ein street in den Graphen und zeichnet
+     */
     public boolean addStreet(Buildings b1, Buildings b2){
         Vertex v1 = allBuildings.getVertex(b1.getId());
         Vertex v2 = allBuildings.getVertex(b2.getId());
