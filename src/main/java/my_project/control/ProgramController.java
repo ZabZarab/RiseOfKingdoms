@@ -14,7 +14,7 @@ import my_project.model.*;
 public class ProgramController {
 
     //Attribute
-    private int idCounter = 1; // Zählt die Anzahl der erstellten Gebäude mit, um ID's für Die Gebäude zu generieren
+    private int idCounter; // Zählt die Anzahl der erstellten Gebäude mit, um ID's für Die Gebäude zu generieren
 
     // Referenzen
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
@@ -31,6 +31,7 @@ public class ProgramController {
     private Player player;
     private HondaCivic carS;
     private Truck carB;
+    private Street drawStreet;
 
     /**
      * Konstruktor
@@ -70,6 +71,9 @@ public class ProgramController {
         //haus groß
         houseBig = new HouseBig(0, 0, null);
         viewController.draw(houseBig);
+
+        drawStreet = new Street(0,0,0,0);
+        viewController.draw(drawStreet);
     }
 
     /**
@@ -105,7 +109,7 @@ public class ProgramController {
             houseBig.setY(630);
         }
         if(hotbar.isAddBHouse() && hotbar.getBHB() == false && player.getMoney() >= 2000 && checkIfCollides()){
-            addBHouse(mouse.getxPos(), mouse.getyPos());
+            addBHouse(mouse.getxPos()- (int) houseBig.getWidth()/2, mouse.getyPos()- (int) houseBig.getHeight()/2);
             hotbar.setAddBHouse(false);
             hotbar.setAmountOfBigH(hotbar.getAmountOfBigH()+1);
             player.setMoney(player.getMoney()-houseBig.getPrice());
@@ -113,29 +117,30 @@ public class ProgramController {
             hotbar.setAddBHouse(false);
         }
         hotbar.setAmountOfBuildings(hotbar.getAmountOfBigH()+hotbar.getAmountOfSmallH());
-        //Car Adding simulator
-        if(hotbar.isAddHonda() && player.getMoney() >= 500){
-            //TODO-01 car add methode sobald wir es haben
-            hotbar.setAddHonda(false);
-            hotbar.setAmountOfCar(hotbar.getAmountOfCar()+1);
-            hotbar.setAmountOfHonda(hotbar.getAmountOfHonda()+1);
-            player.setMoney(player.getMoney()-500);
-            HondaCivic civic = new HondaCivic(-100,-100);
-            hondaList.append(civic);
-            viewController.draw(civic);
+        if(!carS.collidesWith(carS.getX2(),carS.getY())) carS.driveToOneHouse(carS.getX(), carS.getY(), 0, 400, dt);
+        if(!carB.collidesWith(carB.getX2(),carB.getY())) carB.driveToOneHouse(carB.getX(), carB.getY(), 0, 400, dt);
+        //System.out.println(carS.isGo());
+        //Drag and drop zeichnen und erstellen von Straßen
+        if(dragStreetBuildingCheck()!=null) {
+            if(addStreetBuildingCheck()!=null && allBuildings.getEdge(allBuildings.getVertex(addStreetBuildingCheck().getId()), allBuildings.getVertex(dragStreetBuildingCheck().getId()))==null && !addStreetBuildingCheck().equals(dragStreetBuildingCheck())){
+                System.out.println("oh no");
+                addStreet(dragStreetBuildingCheck(), addStreetBuildingCheck());
+                dragStreetBuildingCheck().setDragStreet(false);
+                addStreetBuildingCheck().setAddStreet(false);
+                drawStreet.setPositions(0,0,0,0);
+            }else{
+                if(dragStreetBuildingCheck().isDrawStreet()){
+                    drawStreet.setPositions(dragStreetBuildingCheck().getX() + dragStreetBuildingCheck().getWidth()/2, dragStreetBuildingCheck().getY()+ dragStreetBuildingCheck().getHeight()/2, mouse.getxPos(), mouse.getyPos());
+                }else{
+                    drawStreet.setPositions(0,0,0,0);
+                }
+
+            }
+
         }
-        if(hotbar.isAddTruck() && player.getMoney() >= 2500){
-            //TODO-01 car add methode sobald wir es haben
-            hotbar.setAddTruck(false);
-            hotbar.setAmountOfCar(hotbar.getAmountOfCar()+1);
-            hotbar.setAmountOfTruck(hotbar.getAmountOfTruck()+1);
-            player.setMoney(player.getMoney()-2500);
-            Truck truck = new Truck(-100,-100);
-            truckList.append(truck);
-        }
-        //if(!carS.collidesWith(carS.getX2(),carS.getY())) carS.driveToOneHouse(carS.getX(), carS.getY(), 0, 400, dt);
-        //if(!carB.collidesWith(carB.getX2(),carB.getY())) carB.driveToOneHouse(carB.getX(), carB.getY(), 0, 400, dt);
-        driveHonda(600,500,dt);
+        //addStreetBuildingCheck();
+        //dragStreetBuildingCheck();
+
     }
 
     public void addAll(){
@@ -168,6 +173,7 @@ public class ProgramController {
         viewController.draw(hS);
         allBuildings.addVertex(new Vertex(id));
         buildingsList.append(hS);
+        viewController.register(hS);
         idCounter++;
     }
     public void addBHouse(int x, int y){
@@ -177,15 +183,17 @@ public class ProgramController {
         viewController.draw(hB);
         allBuildings.addVertex(new Vertex(id));
         buildingsList.append(hB);
+        viewController.register(hB);
         idCounter++;
     }
     public void addMAINHouse(int x, int y){
         //Erstellt und zeichnet ein Haus als Objekt und einen Knoten mit einer ID
-        String id = "b0"; // Erstellt eine ID
+        String id = "b" + idCounter; // Erstellt eine ID
         Main MAIN = new Main(x,y,id);
         viewController.draw(MAIN);
         allBuildings.addVertex(new Vertex(id));
         buildingsList.append(MAIN);
+        viewController.register(MAIN);
         idCounter++;
     }
     public void driveHonda(int endX, int endY,double dt){
@@ -213,9 +221,6 @@ public class ProgramController {
         viewController.draw(hB);
     }
 
-
-
-
     public boolean addStreet(Buildings b1, Buildings b2){
         Vertex v1 = allBuildings.getVertex(b1.getId());
         Vertex v2 = allBuildings.getVertex(b2.getId());
@@ -238,10 +243,7 @@ public class ProgramController {
         buildingsList.toFirst();
         if(!buildingsList.isEmpty()){
             while(buildingsList.hasAccess()){
-                if(buildingsList.getContent().getDistanceToPoint(mouse.getxPos(), mouse.getyPos())<66){
-                    System.out.println("urmom"); return false;
-                }
-
+                if(buildingsList.getContent().getDistanceToPoint(mouse.getxPos(), mouse.getyPos())< buildingsList.getContent().getBorderRadius() + 10) return false;
                 buildingsList.next();
             }
             return true;
@@ -251,4 +253,27 @@ public class ProgramController {
     }
 
 
+    public Buildings dragStreetBuildingCheck(){
+        //Gibt ein Objekt der Liste buildingsList züruck, von welchem in dem Moment gedragged wird, falls vorhanden
+        if(!buildingsList.isEmpty()){
+            buildingsList.toFirst();
+            while(buildingsList.hasAccess()){
+                if(buildingsList.getContent().isDragStreet()) return buildingsList.getContent();
+                buildingsList.next();
+            }
+        }
+        return null;
+    }
+
+    public Buildings addStreetBuildingCheck(){
+        //Gibt ein Objekt der Liste buildingsList züruck, auf welches gedragged wurde, falls vorhanden
+        if(!buildingsList.isEmpty()){
+            buildingsList.toFirst();
+            while(buildingsList.hasAccess()){
+                if(buildingsList.getContent().isAddStreet()) return buildingsList.getContent();
+                buildingsList.next();
+            }
+        }
+        return null;
+    }
 }

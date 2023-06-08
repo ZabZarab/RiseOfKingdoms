@@ -104,4 +104,8 @@ public abstract class Buildings extends InteractiveGraphicalObject {
     public boolean isDrawStreet() {
         return drawStreet;
     }
+
+    public int getBorderRadius() {
+        return borderRadius;
+    }
 }
