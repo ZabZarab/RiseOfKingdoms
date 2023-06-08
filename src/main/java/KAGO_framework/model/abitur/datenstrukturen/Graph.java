@@ -313,74 +313,67 @@ public class Graph{
     return vertices.isEmpty();
   } 
   
-  public List<Vertex> dijkstra(Vertex start, Vertex end) {
-	  vertices.toFirst();
-	    while(vertices.hasAccess()){
-	        Vertex vertex = vertices.getContent();
-	        vertex.setScore(Integer.MAX_VALUE);
-	        vertices.next();
-	    }
-
-	    start.setScore(0);
-	    List<Vertex> toVisit = new List<>();
-	    toVisit.append(start);
-	    
-	    /*
-	     * nach Dijkstra
-	     */
-
-	    while (!toVisit.isEmpty()) {
-	    	toVisit.toFirst();
-	        Vertex current = toVisit.getContent();
-	        toVisit.remove();
-
-	        if (current == end) {
-	            break;
-	        }
-	        System.out.println(current.getID());
-
-	        List<Vertex> neighbors = getNeighbours(current);
-	        
-	        neighbors.toFirst();
-	        while (neighbors.hasAccess()) {
-	            Vertex neighbor = neighbors.getContent();
-	            System.out.println("Neighbor: " + neighbor.getID());
-	            double newScore = current.getScore() +1;
-	            
-	            if (newScore < neighbor.getScore()) {
-	                neighbor.setScore(newScore);
-	                neighbor.setPrevious(current);
-
-	                boolean found = false;
-	                toVisit.toFirst();
-	                while(toVisit.hasAccess()){
-	                	System.out.println(toVisit.getContent().getID() + " : ");
-	                    if (toVisit.getContent() == neighbor) {
-	                        found = true;
-	                        break;
-	                    }
-	                	toVisit.next();
-	                }
-	                if (!found) {
-	                    toVisit.append(neighbor);
-	                }
-	            }
-	            
-	            neighbors.next();
-	        }
-	    }
-
-	    /*
-	     * Baut den Pfad mit ner Liste 
-	     */
-	    List<Vertex> path = new List<>();
-	    Vertex current = end;
-	    while (current != null) {
-	        path.append(current);
-	        current = current.getPrevious();
-	    }
-
-	    return path;
+/**
+  	 * Findet den kürzesten Pfad zwischen zwei Punkten im Graphen
+  	 * @param start - Typ: Vertex, Startknoten
+  	 * @param end - Typ: Vertex, Endknoten
+  	 * @return List: Startknoten - Knoten dazwischen - Endknoten
+  	 */
+	public List<Vertex> dijkstra(Vertex start, Vertex end) {
+		vertices.toFirst();
+		while(vertices.hasAccess()){
+			Vertex vertex = vertices.getContent();
+			vertex.setScore(Integer.MAX_VALUE);
+			vertices.next();
+		}
+		start.setScore(0);
+		List<Vertex> toVisit = new List<>();
+		toVisit.append(start);
+		
+		while (!toVisit.isEmpty()) {
+			toVisit.toFirst();
+			Vertex current = toVisit.getContent();
+			toVisit.remove();
+		
+			if (current == end) break;
+			List<Vertex> neighbors = getNeighbours(current);
+			        
+			neighbors.toFirst();
+		
+			while (neighbors.hasAccess()) {
+				Vertex neighbor = neighbors.getContent();
+		
+				double newScore = current.getScore() +1;
+			            
+				if (newScore < neighbor.getScore()) {
+					neighbor.setScore(newScore);
+					neighbor.setPrevious(current);
+					boolean found = false;
+					toVisit.toFirst();
+				
+					while(toVisit.hasAccess()){
+						if (toVisit.getContent() == neighbor) {
+							found = true;
+							break;
+						}
+						
+						toVisit.next();
+					}
+					if (!found) toVisit.append(neighbor);
+				}
+			            
+				neighbors.next();
+			}
+		}
+		
+		List<Vertex> path = new List<>();
+		Vertex current = end;
+		
+		while (current != null) {
+			path.append(current);
+			current = current.getPrevious();
+		}
+		return path;
 	}
 
 }
