@@ -68,6 +68,7 @@ public abstract class Buildings extends InteractiveGraphicalObject {
         return price;
     }
 
+
     @Override
     public void mousePressed(MouseEvent e) {
         dragStreet = false;

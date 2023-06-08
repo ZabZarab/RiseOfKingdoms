@@ -69,6 +69,10 @@ public class Hotbar extends InteractiveGraphicalObject {
 
     }
 
+    /**
+     * setzt die buttons ture wenn man auf sie clicked
+     * @param e MouseEvent
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getX() >= 5 && e.getX() <= 130 && e.getY() >= 605 && e.getY() <= 685 && e.getButton() == MouseEvent.BUTTON1) {
@@ -85,6 +89,10 @@ public class Hotbar extends InteractiveGraphicalObject {
         }
     }
 
+    /**
+     * setzt die buttons false wenn man die maus loslässt
+     * @param e MouseEvent
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         if(sHB == true){

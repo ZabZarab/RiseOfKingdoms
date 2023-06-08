@@ -412,7 +412,9 @@ public class ProgramController {
         List<Vertex> vertices = allBuildings.getVertices(); // Liste von allen buildings
         vertices.toFirst(); // wollen auf das erste
         //allBuildings.setAllVertexMarks(false);
-        while(vertices.hasAccess()) {  // läuft die Liste durch von allen Knoten uns setzt sie alle auf nicht markiert und mit dem Score(distance) "unendlich"
+        while(vertices.hasAccess()) {  // läuft die Liste durch von allen Knoten und
+            // setzt sie alle auf nicht markiert und mit dem Score(distance) "unendlich"
+            // sowie den Vertex previous auf null
             vertices.getContent().setMark(false);
             vertices.getContent().setScore(Double.POSITIVE_INFINITY);
             vertices.getContent().setPrevious(null);

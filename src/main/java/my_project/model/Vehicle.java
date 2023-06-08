@@ -40,7 +40,10 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
     public void update(double dt){
         //driveToOneHouse(100, 100, 200, 200 , dt);
     }
-
+    /**
+     * fährt ein Vehicle von einem punkt zum anderen und berechnet
+     * die Steigung wie bei einer linearen Funktion.
+     */
     public void driveToOneHouse(double x1, double y1, double x2, double y2, double dt){
         //this.yes = true;
         if(!this.collidesWith(x2,y2) && arrived == false){;
@@ -70,8 +73,7 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
             taskCompleted = true;
             arrived = true;
         }
-        //System.out.println("X: " + (int) x + " Y: " +(int) y);
-        //System.out.println(mY);
+
     }
 
     public double getTime() {
@@ -81,38 +83,6 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
     public void setTime(int time) {
         this.time = time;
     }
-
-    /*public double getX1() {
-        return x1;
-    }
-
-    public void setX1(double x1) {
-        this.x1 = x1;
-    }
-
-    public double getY1() {
-        return y1;
-    }
-
-    public void setY1(double y1) {
-        this.y1 = y1;
-    }
-
-    public double getX2() {
-        return x2;
-    }
-
-    public void setX2(double x2) {
-        this.x2 = x2;
-    }
-
-    public double getY2() {
-        return y2;
-    }
-
-    public void setY2(double y2) {
-        this.y2 = y2;
-    }*/
 
     public boolean getRight(){return right;}
 
