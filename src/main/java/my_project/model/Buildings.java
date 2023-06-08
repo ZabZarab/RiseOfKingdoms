@@ -24,6 +24,7 @@ public abstract class Buildings extends InteractiveGraphicalObject {
     protected boolean dragStreet;
     protected boolean addStreet;
     protected boolean drawStreet;
+    protected int reward;
 
     public Buildings(int x, int y, String id){
         this.x = x;
@@ -108,4 +109,5 @@ public abstract class Buildings extends InteractiveGraphicalObject {
     public int getBorderRadius() {
         return borderRadius;
     }
+    public int getReward(){return reward;}
 }

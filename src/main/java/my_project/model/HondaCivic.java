@@ -14,6 +14,7 @@ public class HondaCivic extends Vehicle {
         super(x, y);
         this.width = 38;
         this.height = 18;
+        this.markiplier = 1.0;
     }
 
     @Override

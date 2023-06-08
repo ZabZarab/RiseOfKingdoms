@@ -20,6 +20,7 @@ public class HouseSmall extends Buildings{
         this.width = 30;
         this.height = 20;
         this.price = 1000;
+        this.reward = 500;
     }
 
     @Override

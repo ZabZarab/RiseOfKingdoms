@@ -19,8 +19,8 @@ public class ProgramController {
     // Referenzen
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
     private Graph allBuildings; // Referenz auf ein Objekt der Klasse Graph - Verwaltet alle Gebäude als Knoten und Straßen als Kanten
-    private List<Vehicle> hondaList; // Referenz auf ein Object der Klasse List mit dem ContentType Vehicle - Verwaltet alle Hondas in einer Liszt
-    private List<Vehicle> truckList; // Referenz auf ein Object der Klasse List mit dem ContentType Vehicle - Verwaltet alle Truckos in einer Liszt
+    private List<HondaCivic> hondaList; // Referenz auf ein Object der Klasse List mit dem ContentType Vehicle - Verwaltet alle Hondas in einer Liszt
+    private List<Truck> truckList; // Referenz auf ein Object der Klasse List mit dem ContentType Vehicle - Verwaltet alle Truckos in einer Liszt
     private List<Buildings> buildingsList; // Referenz auf ein Objekt der Klasse List mit dem ContentType Buildings - Verwaltet alle Gebäude in einer Liste
 
     private Hotbar hotbar;
@@ -117,8 +117,6 @@ public class ProgramController {
             hotbar.setAddBHouse(false);
         }
         hotbar.setAmountOfBuildings(hotbar.getAmountOfBigH()+hotbar.getAmountOfSmallH());
-        if(!carS.collidesWith(carS.getX2(),carS.getY())) carS.driveToOneHouse(carS.getX(), carS.getY(), 0, 400, dt);
-        if(!carB.collidesWith(carB.getX2(),carB.getY())) carB.driveToOneHouse(carB.getX(), carB.getY(), 0, 400, dt);
         //System.out.println(carS.isGo());
         //Drag and drop zeichnen und erstellen von Straßen
         if(dragStreetBuildingCheck()!=null) {
@@ -140,6 +138,33 @@ public class ProgramController {
         }
         //addStreetBuildingCheck();
         //dragStreetBuildingCheck();
+        //Car Adding simulator
+        if(hotbar.isAddHonda() && player.getMoney() >= 500){
+            //TODO-01 car add methode sobald wir es haben
+            hotbar.setAddHonda(false);
+            hotbar.setAmountOfCar(hotbar.getAmountOfCar()+1);
+            hotbar.setAmountOfHonda(hotbar.getAmountOfHonda()+1);
+            player.setMoney(player.getMoney()-500);
+            HondaCivic civic = new HondaCivic(-100,-100);
+            hondaList.append(civic);
+            viewController.draw(civic);
+        }
+        if(hotbar.isAddTruck() && player.getMoney() >= 2500){
+            //TODO-01 car add methode sobald wir es haben
+            hotbar.setAddTruck(false);
+            hotbar.setAmountOfCar(hotbar.getAmountOfCar()+1);
+            hotbar.setAmountOfTruck(hotbar.getAmountOfTruck()+1);
+            player.setMoney(player.getMoney()-2500);
+            Truck truck = new Truck(-100,-100);
+            truckList.append(truck);
+        }
+        //if(!carS.collidesWith(carS.getX2(),carS.getY())) carS.driveToOneHouse(carS.getX(), carS.getY(), 0, 400, dt);
+        //if(!carB.collidesWith(carB.getX2(),carB.getY())) carB.driveToOneHouse(carB.getX(), carB.getY(), 0, 400, dt);
+        if(selectHonda()!=null){
+            HondaCivic honda = selectHonda();
+            honda.driveToOneHouse(500,500,1000,600,dt);
+        }
+
 
     }
 
@@ -196,17 +221,30 @@ public class ProgramController {
         viewController.register(MAIN);
         idCounter++;
     }
-    public void driveHonda(int endX, int endY,double dt){
-        hondaList.toFirst();
-        if(hondaList.hasAccess()&&!hondaList.getContent().isTaskCompleted()){
-            hondaList.getContent().setHasTask(true);
-            hondaList.getContent().setX(555);
-            hondaList.getContent().setY(385);
-            hondaList.getContent().driveToOneHouse(hondaList.getContent().getX(),hondaList.getContent().getY(),endX,endY,dt);
-        }else{
-            hondaList.next();
+    public HondaCivic selectHonda(){
+        if(!hondaList.isEmpty()) {
+            hondaList.toFirst();
+            if (hondaList.hasAccess() && !hondaList.getContent().doesHasTask()) {
+                HondaCivic honda = hondaList.getContent();
+                honda.setHasTask(true);
+                return honda;
+            } else {
+                hondaList.next();
+            }
         }
+        return null;
+    }
 
+    public Truck selectTruck(){
+        truckList.toFirst();
+        if(truckList.hasAccess()&&!truckList.getContent().doesHasTask()){
+            Truck truck = truckList.getContent();
+            truck.setHasTask(true);
+            return truck;
+        }else{
+            truckList.next();
+        }
+        return null;
     }
 
     public void drawSHouse(int x, int y){

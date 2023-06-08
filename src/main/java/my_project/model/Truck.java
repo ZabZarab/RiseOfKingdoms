@@ -11,6 +11,7 @@ public class Truck extends Vehicle{
         super(x, y);
         this.width = 50;
         this.height = 33;
+        this.markiplier = 1.5;
     }
 
     @Override

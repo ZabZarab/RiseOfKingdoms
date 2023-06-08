@@ -18,6 +18,7 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
     protected boolean right;
     protected boolean hasTask;
     protected boolean taskCompleted;
+    protected double markiplier;
 
 
     protected Vehicle(double x, double y){
@@ -116,7 +117,9 @@ public abstract class Vehicle extends InteractiveGraphicalObject {
 
     public boolean isTaskCompleted(){return taskCompleted;}
 
+    public double getMarkiplier(){return markiplier;}
     public void setTaskCompleted(boolean taskCompleted){
         this.taskCompleted = taskCompleted;
     }
 }
+
