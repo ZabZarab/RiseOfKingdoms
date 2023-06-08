@@ -343,5 +343,20 @@ public class List<ContentType> {
       return null;
     }
   }
+
+  /**
+   * Setzt das vorherige Element des aktuellen Elements.
+   * Das aktuelle Element bleibt unverändert.
+   */
+  public void setPrevious(ContentType pContent) {
+    if (pContent != null && hasAccess() && current != first) {
+      ListNode previous = getPrevious(current);
+      if (previous != null) {
+        previous.setContentObject(pContent);
+      }
+    }
+  }
+
+
   
 }

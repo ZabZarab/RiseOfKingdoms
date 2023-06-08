@@ -20,7 +20,8 @@ public class Vertex{
   //Einmalige ID des Knotens und Markierung
   private String id;
   private boolean mark;
-  private int score;
+  private double score;
+  private Vertex previous;
   
   /**
   * Ein neues Objekt vom Typ Vertex wird erstellt. Seine Markierung hat den Wert false.
@@ -51,11 +52,25 @@ public class Vertex{
     return mark;
   }
 
-  public void setScore(int score) {
+  public void setScore(double score) {
     this.score = score;
   }
 
-  public int getScore() {
+  public double getScore() {
     return score;
+  }
+
+  /**
+   * Der Auftrag setzt den vorherigen Knoten auf den angegebenen Wert pPrevious.
+   */
+  public void setPrevious(Vertex pPrevious) {
+    previous = pPrevious;
+  }
+
+  /**
+   * Die Anfrage liefert den vorherigen Knoten.
+   */
+  public Vertex getPrevious() {
+    return previous;
   }
 }

@@ -32,6 +32,7 @@ public class ProgramController {
     private HondaCivic carS;
     private Truck carB;
     private Street drawStreet;
+    private Vertex vertex;
 
     /**
      * Konstruktor
@@ -359,43 +360,69 @@ public class ProgramController {
     //Dijakstra
 
     public List<Vertex> dijkstra(Vertex start, Vertex end){
-        List<Vertex> finalPath = new List<>();
+        List<Vertex> finalPath = new List<>();  // Der kürzeste weg in einer liste von Vertexs
 
-        List<Vertex> vertices = allBuildings.getVertices();
-        vertices.toFirst();
-        while(vertices.hasAccess()) {
-            vertices.getContent().setMark(false);
+        List<Vertex> vertices = allBuildings.getVertices(); // Liste von allen buildings
+        vertices.toFirst(); // wollen auf das erste
+        allBuildings.setAllVertexMarks(false);
+        while(vertices.hasAccess()) {  // läuft die Liste durch von allen Knoten uns setzt sie alle auf nicht markiert und mit dem Score(distance) "unendlich"
+            //vertices.getContent().setMark(false);
             vertices.getContent().setScore(Integer.MAX_VALUE);
             vertices.next();
+            vertices.getContent().setPrevious(null);
         }
-        start.setScore(0);
+        start.setScore(0); // Setzt den Start knoten den Score 0, da die distance ja 0 ist
 
-        while(true) {
-            Vertex current = nodeWithLowestScore();
-            current.setMark(true);
+        while(true) { // Die Schleife beginnt und wird solange ausgeführt,
+            // bis der Endknoten (end) erreicht wird oder bis festgestellt wird,
+            // dass kein Pfad zum Endknoten existiert.
 
-            List<Vertex> neighbours = allBuildings.getNeighbours(current);
+            Vertex current = nodeWithLowestScore(); // Innerhalb der Schleife wird der Knoten mit dem niedrigsten score
+            // (über die Methode nodeWithLowestScore()) ausgewählt und als current markiert.
+            // Hier ist es der Start knoten weil er den niedrigsten score hat
+
+            if (current == null || current.getScore() == Integer.MAX_VALUE) {
+                return null; // Kein Pfad zum Endknoten gefunden
+            }
+
+            current.setMark(true); // dann wird er true gesetzt
+
+            if (current == end) {
+                // Der Endknoten wurde erreicht, erstelle den finalen Pfad
+                Vertex pathNode = end;
+                while (pathNode != null) {
+                    finalPath.insert(pathNode);
+                    pathNode = pathNode.getPrevious();
+                }
+                return finalPath;
+            }
+
+            List<Vertex> neighbours = allBuildings.getNeighbours(current); // liste der Nachbarn vom Start wird erstellt
             neighbours.toFirst();
-            while(neighbours.hasAccess()) {
+            while(neighbours.hasAccess()) { //Für jeden Nachbarknoten, der nicht markiert ist, wird geprüft,
+                // ob die aktuelle Entfernung (score) plus die Kosten der Kante
+                // zu diesem Nachbarn kleiner ist als der bisherige score des Nachbarn.
                 if(!neighbours.getContent().isMarked()) {
-                    int newScore = neighbours.getContent().getScore()+1;
+                    double newScore = neighbours.getContent().getScore()+ allBuildings.getEdge(current,neighbours.getContent()).getWeight();
                     if(newScore < neighbours.getContent().getScore()) {
+                        //Wenn ja, wird der score des Nachbarn aktualisiert und der Nachbarknoten wird zum finalPath hinzugefügt.
                         neighbours.getContent().setScore(newScore);
-                        finalPath.append(neighbours.getContent());
+                        //finalPath.append(neighbours.getContent());
+                        neighbours.setPrevious(current);
                     }
                 }
                 neighbours.next();
             }
 
-            if(current == end) return finalPath;
-            if(nodeWithLowestScore().getScore() == Integer.MAX_VALUE) return null;
+            /*if(current == end) return finalPath;
+            if(nodeWithLowestScore().getScore() == Integer.MAX_VALUE) return null;*/
         }
     }
 
     private Vertex nodeWithLowestScore() {
         List<Vertex> vertices = allBuildings.getVertices();// Liste mit allen buildings die im Graphen sind
         vertices.toFirst();
-        Vertex result = vertices.getContent();// current als erstes als vorlaüfiges Ergebnis
+        Vertex result = vertices.getContent();// current wird als erstes vorlaüfiges Ergebnis festgelegt
 
         while(vertices.hasAccess()) {
             if(!vertices.getContent().isMarked() &&
@@ -404,7 +431,12 @@ public class ProgramController {
             }
             vertices.next();
         }
+        //Während der Durchlaufschleife wird für jeden Knoten überprüft,
+        // ob er nicht markiert ist und ob
+        // sein score kleiner oder gleich dem score des bisherigen Ergebnisknotens (result) ist.
 
-        return result;
+        return result; // Nachdem alle Knoten überprüft wurden,
+        // wird das vorläufige Ergebnis (result) zurückgegeben.
+        // Dieser Knoten hat den niedrigsten score unter den nicht markierten Knoten.
     }
 }
