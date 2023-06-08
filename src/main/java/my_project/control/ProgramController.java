@@ -269,7 +269,7 @@ public class ProgramController {
                 if(b.getContent() == v2) return false;
                 b.next();
             }
-            allBuildings.addEdge(new Edge(v1 , v2 , 1));
+            allBuildings.addEdge(new Edge(v1 , v2 , b1.getDistanceTo(b2)));
             Street street = new Street(b1.getX()+b1.getWidth()/2, b1.getY()+b1.getHeight()/2,b2.getX()+b2.getWidth()/2,b2.getY()+b2.getHeight()/2);
             viewController.draw(street);
             return true;
