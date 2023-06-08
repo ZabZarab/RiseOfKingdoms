@@ -1,4 +1,4 @@
-package KAGO_framework.model.abitur.datenstrukturen;
+
 
 /**
  * <p>
@@ -20,8 +20,8 @@ public class Vertex{
   //Einmalige ID des Knotens und Markierung
   private String id;
   private boolean mark;
-  private double score;
-  private Vertex previous;
+  private int score;
+  private Vertex previous = null;
   
   /**
   * Ein neues Objekt vom Typ Vertex wird erstellt. Seine Markierung hat den Wert false.
@@ -29,6 +29,14 @@ public class Vertex{
   public Vertex(String pID){
     id = pID;
     mark = false;
+  }
+  
+  public void setPrevious(Vertex v) {
+	  previous = v;
+  }
+  
+  public Vertex getPrevious() {
+	  return previous;
   }
   
   /**
@@ -39,38 +47,31 @@ public class Vertex{
   }
   
   /**
+  * Die Anfrage liefert true, wenn die Markierung des Knotens den Wert true hat, ansonsten false.
+  */
+  public boolean isMarked(){
+    return mark;
+  }
+  
+  
+  /**
+   * Liefert den score-Wert (für Dijkstra)
+   */
+  public int getScore() {
+	  return score;
+  }
+  /**
+   * Setzt den Score-Wert
+   */
+  public void setScore(int newScore) {
+	  score = newScore;
+  }
+  
+  /**
   * Der Auftrag setzt die Markierung des Knotens auf den Wert pMark.
   */
   public void setMark(boolean pMark){
     mark = pMark;
   }
   
-  /**
-  * Die Anfrage liefert true, wenn die Markierung des Knotens den Wert true hat, ansonsten false.
-  */
-  public boolean isMarked(){
-    return mark;
-  }
-
-  public void setScore(double score) {
-    this.score = score;
-  }
-
-  public double getScore() {
-    return score;
-  }
-
-  /**
-   * Der Auftrag setzt den vorherigen Knoten auf den angegebenen Wert pPrevious.
-   */
-  public void setPrevious(Vertex pPrevious) {
-    previous = pPrevious;
-  }
-
-  /**
-   * Die Anfrage liefert den vorherigen Knoten.
-   */
-  public Vertex getPrevious() {
-    return previous;
-  }
 }
